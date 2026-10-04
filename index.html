@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111310">
+    <meta name="description" content="An interactive car-care booking experience for Naqa Qurtuba, Tripoli.">
+    <title>
+      Naqa Qurtuba | The Wash Lab
+    </title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='12' fill='%23111310'/%3E%3Ctext x='30' y='44' text-anchor='middle' font-size='42' font-family='Arial' fill='%23dfff00'%3EQ%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="journey/styles.css">
+    <link rel="stylesheet" href="journey/wipe.css">
+    <!-- Dependency-free modules, loaded in dependency order. Works as local files. -->
+    <script defer src="journey/config.js">
+    </script>
+    <script defer src="journey/pricing.js">
+    </script>
+    <script defer src="journey/i18n.js">
+    </script>
+    <script defer src="journey/motion.js">
+    </script>
+    <script defer src="journey/app.js">
+    </script>
+    <script defer src="journey/wipe.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#step-title" data-t="skip">
+      Skip to booking
+    </a>
+    <!-- ================================================================
+       1. BRAND AND LANGUAGE — persistent on desktop and mobile.
+       ================================================================ -->
+    <header class="site-header">
+      <a class="brand" href="#" data-label="brand" aria-label="Naqa Qurtuba">
+        <span class="brand-mark" aria-hidden="true">
+          ق
+        </span>
+        <span>
+          <strong data-t="brand">
+            NAQA QURTUBA
+          </strong>
+          <small data-t="brandSub">
+            CAR CARE / TRIPOLI
+          </small>
+        </span>
+      </a>
+      <div class="header-caption">
+        <span aria-hidden="true">
+          ✦
+        </span>
+        <span data-t="lab">
+          THE WASH LAB
+        </span>
+      </div>
+      <div class="header-actions">
+        <a class="proof-jump" href="#wash-yourself" data-proof="jump">Try the shine ↗</a>
+        <a class="call-link" href="tel:+218912103120" data-t="help">
+          Need a hand?
+        </a>
+        <div class="language-toggle" role="group" data-label="language" aria-label="Language">
+          <button type="button" data-language="en" lang="en" aria-pressed="true">
+            EN
+          </button>
+          <button type="button" data-language="ar" lang="ar" aria-pressed="false">
+            العربية
+          </button>
+        </div>
+      </div>
+    </header>
+    <main id="wash-lab">
+      <!-- ================================================================
+         2. JOURNEY PROGRESS — completed steps remain editable.
+         ================================================================ -->
+      <section class="journey-heading" aria-labelledby="journey-title">
+        <div>
+          <p class="eyebrow" data-t="introLabel">
+            A LITTLE PLAY. A LOT OF SHINE.
+          </p>
+          <h1 id="journey-title" data-t="intro">
+            Your car. Your clean.
+          </h1>
+        </div>
+        <p class="prototype-label">
+          <span aria-hidden="true">
+            ◈
+          </span>
+          <span data-t="prototype">
+            Interactive preview · sample USD prices
+          </span>
+        </p>
+      </section>
+      <nav class="step-nav" data-label="steps" aria-label="Booking steps">
+        <ol id="step-navigation">
+        </ol>
+      </nav>
+      <!-- ================================================================
+         3. SVG CONTROL SURFACE AND CURRENT STEP
+         SVG hit zones are keyboard accessible. Equivalent labeled controls
+         provide an alternative for anyone who cannot use the illustration.
+         ================================================================ -->
+      <div class="lab-layout" id="lab-layout" data-step="1">
+        <section class="car-stage" id="car-stage" data-label="carStage" aria-label="Interactive vehicle">
+          <div class="stage-top">
+            <span>
+              <i aria-hidden="true">
+              </i>
+              <span data-t="livePreview">
+                LIVE CONFIGURATION
+              </span>
+            </span>
+            <span id="view-label">
+            </span>
+          </div>
+          <div class="stage-grid" aria-hidden="true">
+          </div>
+          <div class="orbit orbit-one" aria-hidden="true">
+          </div>
+          <div class="orbit orbit-two" aria-hidden="true">
+          </div>
+          <span class="stage-coordinate" aria-hidden="true">
+            NQ / 32.88° N
+          </span>
+          <div class="car-camera" id="car-camera">
+            <svg id="interactive-car" viewBox="0 0 360 600" xmlns="http://www.w3.org/2000/svg" aria-labelledby="car-svg-title">
+              <title id="car-svg-title">
+                Interactive top-down car
+              </title>
+              <defs>
+                <linearGradient id="body-metal" x1="0" y1="0" x2="1" y2="0">
+                  <stop stop-color="#383e38"/>
+                  <stop offset=".16" stop-color="#788275"/>
+                  <stop offset=".31" stop-color="#495145"/>
+                  <stop offset=".72" stop-color="#464d41"/>
+                  <stop offset=".87" stop-color="#7f8978"/>
+                  <stop offset="1" stop-color="#2a3028"/>
+                </linearGradient>
+                <linearGradient id="glass" x1="0" y1="0" x2=".7" y2="1">
+                  <stop stop-color="#344b47"/>
+                  <stop offset=".4" stop-color="#172720"/>
+                  <stop offset="1" stop-color="#07120e"/>
+                </linearGradient>
+                <linearGradient id="hood-metal" x1="0" y1="0" x2="0" y2="1">
+                  <stop stop-color="#65705b"/>
+                  <stop offset="1" stop-color="#343c30"/>
+                </linearGradient>
+                <filter id="car-shadow" x="-60%" y="-30%" width="220%" height="180%">
+                  <feDropShadow dx="0" dy="22" stdDeviation="16" flood-color="#000" flood-opacity=".8"/>
+                </filter>
+              </defs>
+              <ellipse cx="180" cy="330" rx="109" ry="236" fill="#000" opacity=".4"/>
+              <!-- Four generous wheel hit zones. Each toggles the same add-on. -->
+              <g class="tires">
+                <g class="car-control tire-control" data-part="tires" role="button" tabindex="-1">
+                  <rect class="hit-zone" x="35" y="142" width="88" height="94"/>
+                  <rect class="rubber" x="64" y="155" width="29" height="72" rx="9"/>
+                  <path d="M70 164v53m7-55v57m8-55v53"/>
+                </g>
+                <g class="car-control tire-control" data-part="tires" role="button" tabindex="-1">
+                  <rect class="hit-zone" x="237" y="142" width="88" height="94"/>
+                  <rect class="rubber" x="267" y="155" width="29" height="72" rx="9"/>
+                  <path d="M274 164v53m7-55v57m8-55v53"/>
+                </g>
+                <g class="car-control tire-control" data-part="tires" role="button" tabindex="-1">
+                  <rect class="hit-zone" x="35" y="393" width="88" height="94"/>
+                  <rect class="rubber" x="64" y="405" width="29" height="72" rx="9"/>
+                  <path d="M70 414v53m7-55v57m8-55v53"/>
+                </g>
+                <g class="car-control tire-control" data-part="tires" role="button" tabindex="-1">
+                  <rect class="hit-zone" x="237" y="393" width="88" height="94"/>
+                  <rect class="rubber" x="267" y="405" width="29" height="72" rx="9"/>
+                  <path d="M274 414v53m7-55v57m8-55v53"/>
+                </g>
+              </g>
+              <g filter="url(#car-shadow)">
+                <!-- Body outline changes for sedan, SUV, pickup, van, minivan. -->
+                <path id="car-body" class="car-control exterior-control" data-part="exterior" role="button" tabindex="-1" fill="url(#body-metal)" stroke="#88927e" stroke-width="1.5" d="M113 72Q180 48 247 72Q271 90 273 143L271 469Q266 516 241 533Q180 550 119 533Q94 516 89 469L87 143Q89 90 113 72Z"/>
+                <g class="body-details">
+                  <path id="hood" d="M113 93Q180 74 247 93L248 188Q180 168 112 188Z" fill="url(#hood-metal)" stroke="#a4af9244"/>
+                  <path d="M119 110L126 165M241 110L234 165" stroke="#b4bda066" fill="none"/>
+                  <path class="headlight" d="M101 103L132 96L130 108L100 117ZM259 103L228 96L230 108L260 117Z"/>
+                  <path d="M146 83h68m-63 5h58" stroke="#121b0d" stroke-width="4"/>
+                  <path id="windshield" d="M114 198Q180 172 246 198L233 249Q180 233 127 249Z" fill="url(#glass)" stroke="#93a28977"/>
+                  <path d="M126 205l27-9m-23 19l40-15" stroke="#b0d0c633" stroke-width="3"/>
+                </g>
+                <!-- Cabin is revealed when selecting the interior. -->
+                <g class="cabin">
+                  <rect x="123" y="251" width="114" height="142" rx="20" fill="#111711"/>
+                  <rect x="130" y="270" width="40" height="64" rx="10"/>
+                  <rect x="190" y="270" width="40" height="64" rx="10"/>
+                  <rect x="132" y="346" width="96" height="33" rx="8"/>
+                  <circle cx="148" cy="264" r="11" fill="none" stroke="#89947c" stroke-width="3"/>
+                </g>
+                <g class="car-control door-control door-left" data-part="interior" role="button" tabindex="-1">
+                  <rect class="hit-zone" x="64" y="224" width="88" height="194"/>
+                  <path d="M96 226L126 249L126 382L97 416Z"/>
+                  <path class="door-glass" d="M104 242L118 257L118 354L105 368Z"/>
+                  <path d="M100 342v24" stroke="#d7e0cd" stroke-width="3"/>
+                </g>
+                <g class="car-control door-control door-right" data-part="interior" role="button" tabindex="-1">
+                  <rect class="hit-zone" x="208" y="224" width="88" height="194"/>
+                  <path d="M264 226L234 249L234 382L263 416Z"/>
+                  <path class="door-glass" d="M256 242L242 257L242 354L255 368Z"/>
+                  <path d="M260 342v24" stroke="#d7e0cd" stroke-width="3"/>
+                </g>
+                <path id="car-roof" class="car-control roof-control" data-part="wax" role="button" tabindex="-1" d="M131 262Q180 249 229 262L231 377Q180 392 129 377Z" fill="url(#hood-metal)" stroke="#8f9b8055"/>
+                <g class="body-details">
+                  <path id="rear-glass" d="M128 401Q180 419 232 401L246 461Q180 481 114 461Z" fill="url(#glass)" stroke="#8f9b8077"/>
+                  <g id="pickup-bed" hidden>
+                    <path d="M111 361H249V494Q180 514 111 494Z" fill="#141c13" stroke="#93a284"/>
+                    <path d="M127 374v111m17-111v115m18-115v119m18-119v121m18-121v119m18-119v115m17-115v111" stroke="#697960"/>
+                  </g>
+                  <path class="tail-light" d="M103 486L133 497L132 506L102 496ZM257 486L227 497L228 506L258 496Z"/>
+                  <path d="M131 519Q180 531 229 519" stroke="#11180d" stroke-width="5" fill="none"/>
+                  <rect x="163" y="502" width="34" height="9" rx="2" fill="#98a18b" opacity=".4"/>
+                  <path d="M88 241L71 251v19l17-3m184-26l17 10v19l-17-3" fill="#454f3e" stroke="#98a58a"/>
+                </g>
+              </g>
+              <g id="wax-sparkles" aria-hidden="true">
+                <path d="M171 300l9-23 9 23 23 9-23 9-9 23-9-23-23-9Z"/>
+                <path d="M206 348l4-11 4 11 11 4-11 4-4 11-4-11-11-4Z"/>
+              </g>
+            </svg>
+          </div>
+          <div class="stage-callout" id="stage-callout">
+            <span class="callout-plus" aria-hidden="true">
+              +
+            </span>
+            <span id="stage-hint">
+            </span>
+          </div>
+          <div class="stage-bottom">
+            <span id="vehicle-stage-label">
+            </span>
+            <span data-t="topView">
+              TOP VIEW / INTERACTIVE
+            </span>
+          </div>
+        </section>
+        <!-- One panel per step. No long scrolling booking form. -->
+        <section class="control-panel" aria-labelledby="step-title">
+          <div class="panel-heading">
+            <p class="eyebrow" id="step-kicker">
+            </p>
+            <h2 id="step-title" tabindex="-1">
+            </h2>
+            <p id="step-description">
+            </p>
+          </div>
+          <!-- STEP 1: cycle vehicle silhouettes. -->
+          <section class="step-panel" id="panel-1" aria-labelledby="step-title">
+            <div class="vehicle-selector">
+              <button class="icon-button" id="previous-vehicle" type="button" data-label="previousVehicle" aria-label="Previous vehicle">
+                ‹
+              </button>
+              <div>
+                <span id="vehicle-counter">
+                </span>
+                <h3 id="vehicle-name">
+                </h3>
+              </div>
+              <button class="icon-button" id="next-vehicle" type="button" data-label="nextVehicle" aria-label="Next vehicle">
+                ›
+              </button>
+            </div>
+            <div id="vehicle-dots" class="vehicle-dots" role="group" data-label="vehicleTypes" aria-label="Vehicle types">
+            </div>
+            <div class="detail-line">
+              <span data-t="basePrice">
+                Vehicle base price
+              </span>
+              <strong id="base-price">
+              </strong>
+            </div>
+            <p class="quiet-note" data-t="vehicleNote">
+              Cycle through the silhouettes. Find your ride.
+            </p>
+          </section>
+          <!-- STEP 2: body and opening doors select wash coverage. -->
+          <section class="step-panel" id="panel-2" hidden aria-labelledby="step-title">
+            <div id="package-options" class="package-options" role="group" data-label="washPackage" aria-label="Wash package">
+            </div>
+            <p class="interaction-note">
+              <span aria-hidden="true">
+                ⌖
+              </span>
+              <span data-t="doorHint">
+                Tap the body for exterior. Tap a door for interior. Select both for a full wash.
+              </span>
+            </p>
+          </section>
+          <!-- STEP 3: wheels and roof toggle optional extras. -->
+          <section class="step-panel" id="panel-3" hidden aria-labelledby="step-title">
+            <div id="addon-options" class="addon-options">
+            </div>
+            <p class="interaction-note">
+              <span aria-hidden="true">
+                ✦
+              </span>
+              <span data-t="extrasHint">
+                Tap a tire to add shine, or tap the roof for wax. Tap again to remove.
+              </span>
+            </p>
+            <span class="optional-label" data-t="optional">
+              ALL EXTRAS ARE OPTIONAL
+            </span>
+          </section>
+          <!-- STEP 4: calendar and reminder preferences. -->
+          <section class="step-panel" id="panel-4" hidden aria-labelledby="step-title">
+            <div class="calendar">
+              <div class="calendar-heading">
+                <button id="previous-month" class="icon-button" type="button" data-label="previousMonth" aria-label="Previous month">
+                  ‹
+                </button>
+                <h3 id="calendar-month">
+                </h3>
+                <button id="next-month" class="icon-button" type="button" data-label="nextMonth" aria-label="Next month">
+                  ›
+                </button>
+              </div>
+              <div class="weekdays" id="weekdays" aria-hidden="true">
+              </div>
+              <div class="calendar-days" id="calendar-days" role="group" data-label="chooseDate" aria-label="Choose a date">
+              </div>
+            </div>
+            <div class="time-heading">
+              <h3 data-t="time">
+                Choose a time
+              </h3>
+              <small data-t="timezone">
+                Tripoli time
+              </small>
+            </div>
+            <div class="time-slots" id="time-slots" role="group" data-label="time" aria-label="Choose a time">
+            </div>
+            <p class="policy-warning">
+              <strong data-t="arrivalTitle">
+                30-MINUTE GRACE PERIOD
+              </strong>
+              <span data-t="policy">
+                Appointments have a strict 30-minute grace period. If you are more than 30 minutes late, your spot will be forfeited.
+              </span>
+            </p>
+            <label class="reminder-toggle">
+              <span>
+                <strong data-t="reminder">
+                  Send me a reminder
+                </strong>
+                <small data-t="reminderSub">
+                  Optional SMS or email
+                </small>
+              </span>
+              <input id="reminder" type="checkbox" role="switch">
+              <span class="switch-track" aria-hidden="true">
+              </span>
+            </label>
+            <div id="reminder-settings" hidden>
+              <fieldset class="reminder-channels">
+                <legend class="sr-only" data-t="channel">
+                  Reminder channel
+                </legend>
+                <label>
+                  <input type="radio" name="channel" value="sms" checked>
+                  <span data-t="sms">
+                    SMS
+                  </span>
+                </label>
+                <label>
+                  <input type="radio" name="channel" value="email">
+                  <span data-t="email">
+                    Email
+                  </span>
+                </label>
+              </fieldset>
+              <label class="contact-label">
+                <span id="contact-label">
+                </span>
+                <input id="contact" autocomplete="tel" type="tel" dir="ltr">
+              </label>
+              <p class="quiet-note" data-t="reminderDemo">
+                Preview only. No messages are sent.
+              </p>
+            </div>
+            <label class="policy-accept">
+              <input id="accept-policy" type="checkbox">
+              <span data-t="accept">
+                I accept the arrival policy and payment at the location.
+              </span>
+            </label>
+          </section>
+          <p id="step-error" class="step-error" role="alert" hidden>
+          </p>
+          <div class="panel-footer">
+            <span class="panel-rule" aria-hidden="true">
+            </span>
+            <span data-t="payShort">
+              PAY AT THE WASH. NO CARD NEEDED.
+            </span>
+          </div>
+        </section>
+      </div>
+      <!-- ================================================================
+         4. PERSISTENT TOTAL / NAVIGATION — same controls for all steps.
+         ================================================================ -->
+      <footer class="booking-dock">
+        <div class="total-block">
+          <span data-t="estimate">
+            YOUR WASH ESTIMATE
+          </span>
+          <div>
+            <strong id="total" aria-live="polite" aria-atomic="true">
+            </strong>
+            <small data-t="currency">
+              USD / sample
+            </small>
+          </div>
+        </div>
+        <div class="selection-recap" id="selection-recap">
+        </div>
+        <div class="journey-actions">
+          <button id="back-step" class="back-button" type="button" data-t="back">
+            Back
+          </button>
+          <button id="next-step" class="primary-button" type="button">
+          </button>
+        </div>
+      </footer>
+      <p class="demo-disclaimer" data-t="demo">
+        Prototype only. No appointment is reserved. Call 091 210 3120 to book with the team.
+      </p>
+      <!-- ================================================================
+         5. WASH IT YOURSELF — independent, replayable visual experience.
+         The paired photo is cropped at runtime, never stretched or mirrored.
+         The clean layer stays fixed; pointer strokes erase the dirty layer.
+         ================================================================ -->
+      <section class="wipe-section" id="wash-yourself" aria-labelledby="wipe-title">
+        <div class="wipe-story">
+          <p class="eyebrow" data-proof="eyebrow">A LITTLE DIRT. A BIG REVEAL.</p>
+          <h2 id="wipe-title"><span data-proof="title">Don't just see it.</span><em data-proof="titleAccent">Wash it yourself.</em></h2>
+          <p class="wipe-description" id="wipe-help" data-proof="description">Grab an imaginary wash mitt. Drag across the car and uncover the shine, one swipe at a time.</p>
+          <div class="wipe-instructions"><span aria-hidden="true">↔</span><p data-proof="instructions">Click + drag on desktop. Swipe with your finger on mobile.</p></div>
+          <div class="wipe-score">
+            <div class="wipe-score-heading"><span data-proof="progress">SHINE UNLOCKED</span><strong id="wipe-percent">0%</strong></div>
+            <progress id="wipe-progress" value="0" max="100" aria-label="Shine unlocked"></progress>
+            <p id="wipe-status" role="status" aria-live="polite">Your first swipe starts the transformation.</p>
+          </div>
+          <div class="wipe-actions">
+            <button id="wipe-reset" class="back-button" type="button" disabled><span aria-hidden="true">↺ </span><span data-proof="reset">Make it dirty again</span></button>
+            <button id="wipe-reveal" class="back-button" type="button" disabled data-proof="reveal">Reveal the finish</button>
+          </div>
+          <p class="wipe-note" data-proof="note">Illustrative demo imagery. Your swipes don't change your booking.</p>
+        </div>
+        <figure class="wipe-figure">
+          <div class="wipe-board" id="wipe-board" data-state="loading" aria-busy="true">
+            <canvas id="wipe-clean" width="1000" height="800" aria-hidden="true"></canvas>
+            <canvas id="wipe-dirt" width="1000" height="800" role="img" aria-label="Dirty car. Drag or swipe to reveal the clean finish." aria-describedby="wipe-help"></canvas>
+            <span class="wipe-image-tag" id="wipe-image-tag">BEFORE / YOUR TURN</span>
+            <div class="wipe-start-hint" aria-hidden="true"><span>↔</span><span data-proof="startHint">Swipe to shine</span></div>
+            <span class="wipe-mitt" id="wipe-mitt" aria-hidden="true"></span>
+            <div class="wipe-celebration" aria-hidden="true"><span>✦</span><span data-proof="completeBadge">SHINE UNLOCKED</span></div>
+          </div>
+          <figcaption><span data-proof="caption">ONE CAR. TWO VERY DIFFERENT FEELINGS.</span><span aria-hidden="true">NQ / 01</span></figcaption>
+        </figure>
+      </section>
+    </main>
+    <!-- ================================================================
+       5. CONFIRMATION — local preview, no submission or payment gateway.
+       ================================================================ -->
+    <dialog id="confirmation" aria-labelledby="confirmation-title">
+      <button id="close-confirmation" class="close-dialog" type="button" data-label="close" aria-label="Close confirmation">
+        ×
+      </button>
+      <div class="success-icon" aria-hidden="true">
+        ✓
+      </div>
+      <p class="eyebrow" data-t="finishLabel">
+        YOUR NEXT FRESH START
+      </p>
+      <h2 id="confirmation-title" data-t="finishTitle">
+        Looking sharp.
+      </h2>
+      <p data-t="previewOnly">
+        Your booking preview is ready. No appointment has been reserved.
+      </p>
+      <dl id="confirmation-details">
+      </dl>
+      <p class="payment-message" data-t="payment">
+        Pay in person at the car wash location.
+      </p>
+      <p class="confirmation-policy" data-t="policy">
+        Appointments have a strict 30-minute grace period. If you are more than 30 minutes late, your spot will be forfeited.
+      </p>
+      <a class="primary-button" href="tel:+218912103120" data-t="callBook">
+        Call to book: 091 210 3120
+      </a>
+      <button id="edit-booking" class="back-button" type="button" data-t="edit">
+        Edit my selection
+      </button>
+    </dialog>
+    <noscript>
+      <p class="no-script">
+        Enable JavaScript to use the interactive wash builder. Call 091 210 3120 to book. / فعّل جافاسكريبت لتجربة الحجز أو اتصل بنا.
+      </p>
+    </noscript>
+  </body>
+</html>
