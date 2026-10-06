@@ -1,12 +1,66 @@
 <!doctype html>
 <html lang="en" dir="ltr">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Staff dashboard | Naqa Qurtuba</title><link rel="stylesheet" href="journey/styles.css"><link rel="stylesheet" href="journey/manage.css"><script defer src="vendor/jsqr.js"></script><script defer src="journey/manage.js"></script></head>
-<body data-dashboard="staff">
-<header class="site-header"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">ق</span><span><strong>NAQA QURTUBA</strong><small data-m="staffArea">STAFF / CHECK-IN</small></span></a><div class="header-actions"><span id="signed-in-phone" dir="ltr"></span><button class="back-button" id="language">العربية</button><button class="back-button" id="logout" data-m="logout">Log out</button></div></header>
-<main class="manage-main"><div class="manage-heading"><div><p class="eyebrow" data-m="staffArea">STAFF / CHECK-IN</p><h1 data-m="todayBookings">Today's bookings</h1><p class="muted" id="today-date"></p></div><button id="scan" class="primary-button" data-m="scan">Scan QR code</button></div>
-<p id="reminder-notice" class="notice" hidden></p><p id="page-error" class="error" role="alert" hidden></p><p id="page-status" role="status" aria-live="polite"></p>
-<form id="search-form" class="search-form"><label for="phone-search" data-m="searchLabel">Find a customer by phone number</label><div><input type="tel" id="phone-search" placeholder="091 210 3120" dir="ltr" maxlength="30"><button class="primary-button" data-m="search">Search</button><button type="button" class="back-button" id="clear-search" data-m="clear">Show all</button></div></form>
-<div class="staff-list-heading"><h2 data-m="arrivalQueue">Arrival queue</h2><button class="back-button" id="refresh" data-m="refresh">Refresh</button></div>
-<section id="bookings" aria-live="polite" aria-label="Today's appointments"><p data-m="loading">Loading appointments…</p></section>
-</main><dialog id="booking-dialog" aria-labelledby="dialog-title"><button type="button" id="close-dialog" class="close-dialog" aria-label="Close">×</button><div id="dialog-content"></div></dialog>
-</body></html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Staff dashboard | Naqa Qurtuba</title>
+    <link rel="stylesheet" href="journey/styles.css" />
+    <link rel="stylesheet" href="journey/manage.css" />
+    <script defer src="vendor/jsqr.js"></script>
+    <script defer src="journey/manage.js"></script>
+  </head>
+  <body data-dashboard="staff">
+    <header class="site-header">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark" aria-hidden="true">ق</span
+        ><span
+          ><strong>NAQA QURTUBA</strong><small data-m="staffArea">STAFF / CHECK-IN</small></span
+        ></a
+      >
+      <div class="header-actions">
+        <span id="signed-in-phone" dir="ltr"></span
+        ><button class="back-button" id="language">العربية</button
+        ><button class="back-button" id="logout" data-m="logout">Log out</button>
+      </div>
+    </header>
+    <main class="manage-main">
+      <div class="manage-heading">
+        <div>
+          <p class="eyebrow" data-m="staffArea">STAFF / CHECK-IN</p>
+          <h1 data-m="todayBookings">Today's bookings</h1>
+          <p class="muted" id="today-date"></p>
+        </div>
+        <button id="scan" class="primary-button" data-m="scan">Scan QR code</button>
+      </div>
+      <p id="reminder-notice" class="notice" hidden></p>
+      <p id="page-error" class="error" role="alert" hidden></p>
+      <p id="page-status" role="status" aria-live="polite"></p>
+      <form id="search-form" class="search-form">
+        <label for="phone-search" data-m="searchLabel">Find a customer by phone number</label>
+        <div>
+          <input
+            type="tel"
+            id="phone-search"
+            placeholder="091 210 3120"
+            dir="ltr"
+            maxlength="30"
+          /><button class="primary-button" data-m="search">Search</button
+          ><button type="button" class="back-button" id="clear-search" data-m="clear">
+            Show all
+          </button>
+        </div>
+      </form>
+      <div class="staff-list-heading">
+        <h2 data-m="arrivalQueue">Arrival queue</h2>
+        <button class="back-button" id="refresh" data-m="refresh">Refresh</button>
+      </div>
+      <section id="bookings" aria-live="polite" aria-label="Today's appointments">
+        <p data-m="loading">Loading appointments…</p>
+      </section>
+    </main>
+    <dialog id="booking-dialog" aria-labelledby="dialog-title">
+      <button type="button" id="close-dialog" class="close-dialog" aria-label="Close">×</button>
+      <div id="dialog-content"></div>
+    </dialog>
+  </body>
+</html>

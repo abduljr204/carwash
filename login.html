@@ -1,19 +1,124 @@
 <!doctype html>
 <html lang="en" dir="ltr">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#111310"><title>Welcome back | Naqa Qurtuba</title><link rel="stylesheet" href="journey/styles.css"><link rel="stylesheet" href="journey/account.css"><script defer src="journey/account.js"></script></head>
-<body data-auth="login">
-<header class="site-header"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">&#1602;</span><span><strong>NAQA QURTUBA</strong><small>CAR CARE / TRIPOLI</small></span></a><div class="header-actions"><a class="account-link" href="index.html" data-account="back">Back to the wash</a><div class="language-toggle" role="group" aria-label="Language"><button type="button" data-auth-language="en" aria-pressed="true">EN</button><button type="button" data-auth-language="ar" lang="ar" aria-pressed="false">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</button></div></div></header>
-<main class="auth-layout">
-<section class="auth-story"><p class="eyebrow" data-account="care">A FRESH START.</p><h1><span data-account="yourCar">Your car.</span><br><em data-account="yourClean">Your clean.</em></h1><p data-account="story">A little care goes a long way. Your next fresh start begins here.</p><div class="photo-pair">
-          <figure><div class="photo-crop"><img src="assets/wash-pair.png" alt="Black sedan before washing, covered in dirt" width="1774" height="887" loading="lazy"></div><figcaption data-account="before">BEFORE</figcaption></figure>
-          <figure><div class="photo-crop after"><img src="assets/wash-pair.png" alt="The same black sedan after washing, clean and polished" width="1774" height="887" loading="lazy"></div><figcaption data-account="after">AFTER</figcaption></figure>
-        </div></section>
-<section class="auth-card" aria-labelledby="auth-title"><nav class="auth-tabs" aria-label="Account"><a href="login.html" aria-current="page" data-account="login">Log in</a><a href="signup.html"  data-account="signup">Sign up</a></nav>
-<h2 id="auth-title" data-account="loginTitle">Welcome back</h2><p data-account="loginIntro">Log in with your phone number and password.</p>
-<form id="auth-form" method="post" action="/api/login">
-<label for="phone" data-account="phone">Phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel" dir="ltr" placeholder="+218 91 210 3120" required maxlength="30" aria-describedby="phone-hint"><small id="phone-hint" data-account="phoneHint">Use your country code, or a Libyan number beginning with 09.</small>
-<label for="password" data-account="password">Password</label><div class="password-field"><input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" aria-describedby="password-hint"><button id="toggle-password" type="button" aria-controls="password" aria-pressed="false" data-account="show">Show</button></div><small id="password-hint" data-account="passwordHint">Use 8&ndash;128 characters.</small>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111310" />
+    <title>Welcome back | Naqa Qurtuba</title>
+    <link rel="stylesheet" href="journey/styles.css" />
+    <link rel="stylesheet" href="journey/account.css" />
+    <script defer src="journey/account.js"></script>
+  </head>
+  <body data-auth="login">
+    <header class="site-header">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark" aria-hidden="true">&#1602;</span
+        ><span><strong>NAQA QURTUBA</strong><small>CAR CARE / TRIPOLI</small></span></a
+      >
+      <div class="header-actions">
+        <a class="account-link" href="index.html" data-account="back">Back to the wash</a>
+        <div class="language-toggle" role="group" aria-label="Language">
+          <button type="button" data-auth-language="en" aria-pressed="true">EN</button
+          ><button type="button" data-auth-language="ar" lang="ar" aria-pressed="false">
+            &#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="auth-layout">
+      <section class="auth-story">
+        <p class="eyebrow" data-account="care">A FRESH START.</p>
+        <h1>
+          <span data-account="yourCar">Your car.</span><br /><em data-account="yourClean"
+            >Your clean.</em
+          >
+        </h1>
+        <p data-account="story">
+          A little care goes a long way. Your next fresh start begins here.
+        </p>
+        <div class="photo-pair">
+          <figure>
+            <div class="photo-crop">
+              <img
+                src="assets/wash-pair.png"
+                alt="Black sedan before washing, covered in dirt"
+                width="1774"
+                height="887"
+                loading="lazy"
+              />
+            </div>
+            <figcaption data-account="before">BEFORE</figcaption>
+          </figure>
+          <figure>
+            <div class="photo-crop after">
+              <img
+                src="assets/wash-pair.png"
+                alt="The same black sedan after washing, clean and polished"
+                width="1774"
+                height="887"
+                loading="lazy"
+              />
+            </div>
+            <figcaption data-account="after">AFTER</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="auth-card" aria-labelledby="auth-title">
+        <nav class="auth-tabs" aria-label="Account">
+          <a href="login.html" aria-current="page" data-account="login">Log in</a
+          ><a href="signup.html" data-account="signup">Sign up</a>
+        </nav>
+        <h2 id="auth-title" data-account="loginTitle">Welcome back</h2>
+        <p data-account="loginIntro">Log in with your phone number and password.</p>
+        <form id="auth-form" method="post" action="/api/login">
+          <label for="phone" data-account="phone">Phone number</label
+          ><input
+            id="phone"
+            name="phone"
+            type="tel"
+            autocomplete="tel"
+            dir="ltr"
+            placeholder="+218 91 210 3120"
+            required
+            maxlength="30"
+            aria-describedby="phone-hint"
+          /><small id="phone-hint" data-account="phoneHint"
+            >Use your country code, or a Libyan number beginning with 09.</small
+          >
+          <label for="password" data-account="password">Password</label>
+          <div class="password-field">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              minlength="8"
+              maxlength="128"
+              aria-describedby="password-hint"
+            /><button
+              id="toggle-password"
+              type="button"
+              aria-controls="password"
+              aria-pressed="false"
+              data-account="show"
+            >
+              Show
+            </button>
+          </div>
+          <small id="password-hint" data-account="passwordHint">Use 8&ndash;128 characters.</small>
 
-<p id="auth-error" class="auth-error" role="alert" hidden></p><button class="primary-button" id="auth-submit" type="submit" data-account="login">Log in</button>
-</form><p class="auth-switch"><span data-account="loginSwitch">New to Naqa Qurtuba?</span> <a href="signup.html" data-account="signup">Sign up</a></p><noscript>Enable JavaScript to sign in securely.</noscript></section>
-</main></body></html>
+          <p id="auth-error" class="auth-error" role="alert" hidden></p>
+          <button class="primary-button" id="auth-submit" type="submit" data-account="login">
+            Log in
+          </button>
+        </form>
+        <p class="auth-switch">
+          <span data-account="loginSwitch">New to Naqa Qurtuba?</span>
+          <a href="signup.html" data-account="signup">Sign up</a>
+        </p>
+        <noscript>Enable JavaScript to sign in securely.</noscript>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,12 +1,51 @@
 <!doctype html>
 <html lang="en" dir="ltr">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>My appointments | Naqa Qurtuba</title><link rel="stylesheet" href="journey/styles.css"><link rel="stylesheet" href="journey/manage.css"><script defer src="journey/manage.js"></script></head>
-<body data-dashboard="customer">
-<header class="site-header"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">ق</span><span><strong>NAQA QURTUBA</strong><small>CAR CARE / TRIPOLI</small></span></a><div class="header-actions"><span id="signed-in-phone" dir="ltr"></span><button class="back-button" id="language">العربية</button><button class="back-button" id="logout" data-m="logout">Log out</button></div></header>
-<main class="manage-main"><div class="manage-heading"><div><p class="eyebrow" data-m="yourCare">YOUR CAR CARE, IN ONE PLACE</p><h1 data-m="myAppointments">My appointments</h1><p class="muted" data-m="manageIntro">Your next wash, your check-in pass, and every fresh start before it.</p></div><a href="index.html" class="primary-button" data-m="newBooking">Book a wash</a></div>
-<p id="reminder-notice" class="notice" hidden></p><p id="page-error" class="error" role="alert" hidden></p><p id="page-status" role="status" aria-live="polite"></p>
-<nav class="manage-tabs" aria-label="Appointments"><button data-tab="active" aria-current="page" data-m="active">Active bookings</button><button data-tab="past" data-m="past">Past washes</button><button class="refresh-button" id="refresh" data-m="refresh">Refresh</button></nav>
-<section id="bookings" aria-live="polite" aria-label="Appointments"><p data-m="loading">Loading appointments…</p></section>
-</main>
-<dialog id="booking-dialog" aria-labelledby="dialog-title"><button type="button" id="close-dialog" class="close-dialog" aria-label="Close">×</button><div id="dialog-content"></div></dialog>
-</body></html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My appointments | Naqa Qurtuba</title>
+    <link rel="stylesheet" href="journey/styles.css" />
+    <link rel="stylesheet" href="journey/manage.css" />
+    <script defer src="journey/manage.js"></script>
+  </head>
+  <body data-dashboard="customer">
+    <header class="site-header">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark" aria-hidden="true">ق</span
+        ><span><strong>NAQA QURTUBA</strong><small>CAR CARE / TRIPOLI</small></span></a
+      >
+      <div class="header-actions">
+        <span id="signed-in-phone" dir="ltr"></span
+        ><button class="back-button" id="language">العربية</button
+        ><button class="back-button" id="logout" data-m="logout">Log out</button>
+      </div>
+    </header>
+    <main class="manage-main">
+      <div class="manage-heading">
+        <div>
+          <p class="eyebrow" data-m="yourCare">YOUR CAR CARE, IN ONE PLACE</p>
+          <h1 data-m="myAppointments">My appointments</h1>
+          <p class="muted" data-m="manageIntro">
+            Your next wash, your check-in pass, and every fresh start before it.
+          </p>
+        </div>
+        <a href="index.html" class="primary-button" data-m="newBooking">Book a wash</a>
+      </div>
+      <p id="reminder-notice" class="notice" hidden></p>
+      <p id="page-error" class="error" role="alert" hidden></p>
+      <p id="page-status" role="status" aria-live="polite"></p>
+      <nav class="manage-tabs" aria-label="Appointments">
+        <button data-tab="active" aria-current="page" data-m="active">Active bookings</button
+        ><button data-tab="past" data-m="past">Past washes</button
+        ><button class="refresh-button" id="refresh" data-m="refresh">Refresh</button>
+      </nav>
+      <section id="bookings" aria-live="polite" aria-label="Appointments">
+        <p data-m="loading">Loading appointments…</p>
+      </section>
+    </main>
+    <dialog id="booking-dialog" aria-labelledby="dialog-title">
+      <button type="button" id="close-dialog" class="close-dialog" aria-label="Close">×</button>
+      <div id="dialog-content"></div>
+    </dialog>
+  </body>
+</html>

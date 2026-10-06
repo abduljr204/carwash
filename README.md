@@ -2,6 +2,21 @@
 
 Requires Node.js 24 or newer.
 
+## Project structure
+
+| Location               | Responsibility                                                                                              |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [server.js](server.js) | Start the app or grant staff access from the CLI.                                                           |
+| [backend/](backend/)   | Server-side modules for routing, authentication, database setup, appointments, reminders, and static files. |
+| Root HTML pages        | Booking, account access, customer appointments, and staff check-in screens.                                 |
+| [journey/](journey/)   | Browser scripts, shared business configuration, translations, and styles.                                   |
+| [assets/](assets/)     | Static photos.                                                                                              |
+| [tests/](tests/)       | Authentication, booking, and reminder tests.                                                                |
+
+The database location, public URLs, and existing start/staff commands are unchanged.
+
+## Development
+
 ```sh
 npm install
 npm start
@@ -40,3 +55,5 @@ Without credentials, delivery is disabled and the dashboards say so. A provider-
 For deployment, use HTTPS and `NODE_ENV=production` for Secure cookies. Set `HOST`, `PORT`, and `DATA_DIR` as needed; keep the database on persistent private storage. The built-in IP rate limit is intended for a single process; configure proxy-aware limits at your reverse proxy when deploying behind one.
 
 Run `npm test` for authentication, booking ownership and capacity, QR image decoding, staff check-in, receipts, and reminder-queue tests. Tests use temporary databases and a mock SMS sender, never real SMS.
+
+Use `npm run format` to format the source and `npm run format:check` to check formatting without editing files. Prettier and EditorConfig provide consistent indentation and line endings. Dependencies, local database files, environment secrets, logs, and coverage output are excluded from Git.

@@ -1,5 +1,18 @@
-.data/
+# Dependencies
 node_modules/
+
+# Local database and runtime files
+.data/
+*.log
+
+# Private environment settings (keep the setup template)
 .env
 .env.*
 !.env.example
+
+# Generated test coverage
+coverage/
+
+# Operating system files
+.DS_Store
+Thumbs.db

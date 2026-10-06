@@ -6,7 +6,9 @@
   'use strict';
   function focusStep(step) {
     document.getElementById('lab-layout').dataset.step = String(step);
-    document.getElementById('car-stage').dataset.focus = ['hood', 'doors', 'finish', 'dashboard'][step - 1];
+    document.getElementById('car-stage').dataset.focus = ['hood', 'doors', 'finish', 'dashboard'][
+      step - 1
+    ];
   }
   function updatePartHighlights(selection) {
     const stage = document.getElementById('car-stage');

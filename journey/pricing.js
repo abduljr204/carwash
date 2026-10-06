@@ -13,14 +13,21 @@
   }
   /** Charge the vehicle base once, package once, and each unique extra once. */
   function calculateQuote(selection, config) {
-    const vehicle = config.vehicles.find(item => item.id === selection.vehicleId);
+    const vehicle = config.vehicles.find((item) => item.id === selection.vehicleId);
     if (!vehicle) throw new Error('Unknown vehicle ID');
     const packageId = getPackageId(selection);
     const packagePrice = packageId ? config.packageSurcharges[packageId] : 0;
-    const addons = config.addons.filter(item => selection.addons.includes(item.id));
+    const addons = config.addons.filter((item) => selection.addons.includes(item.id));
     const extrasPrice = addons.reduce((sum, item) => sum + item.price, 0);
-    return { vehicleId: vehicle.id, basePrice: vehicle.basePrice, packageId,
-      packagePrice, addons, extrasPrice, total: vehicle.basePrice + packagePrice + extrasPrice };
+    return {
+      vehicleId: vehicle.id,
+      basePrice: vehicle.basePrice,
+      packageId,
+      packagePrice,
+      addons,
+      extrasPrice,
+      total: vehicle.basePrice + packagePrice + extrasPrice,
+    };
   }
   window.WashPricing = Object.freeze({ getPackageId, calculateQuote });
 })();
