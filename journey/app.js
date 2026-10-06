@@ -3,7 +3,7 @@
    Owns state, step validation, dates, events and accessible UI rendering.
    Pricing is delegated exclusively to pricing.js.
    Animation is delegated exclusively to motion.js.
-   Bookings are saved by the authenticated appointment API. Payment is recorded by staff.
+   Demo bookings are saved in this browser tab.
    ==================================================================== */
 (() => {
   'use strict';
@@ -455,21 +455,14 @@
     if (requestFingerprint && requestFingerprint !== fingerprint) requestKey = crypto.randomUUID();
     requestFingerprint = fingerprint;
     try {
-      const response = await fetch('/api/appointments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, requestKey }),
-        signal: AbortSignal.timeout(20000),
-      });
-      if (response.status === 401) {
-        try {
-          sessionStorage.setItem('naqa-booking-draft', JSON.stringify({ state, requestKey }));
-        } catch {}
-        location.assign('login.html?next=booking');
+      const username = WashDemo.read('account', null);
+      if (!username) {
+        location.assign('login.html');
         return;
       }
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || t('bookingError'));
+      const bookings = WashDemo.read('bookings', []);
+      bookings.push({ ...payload, username, id: requestKey });
+      WashDemo.save('bookings', bookings);
       try {
         sessionStorage.removeItem('naqa-booking-draft');
       } catch {}
@@ -594,12 +587,6 @@
   const renderSms = () => {
     element('sms-availability').textContent = t(smsReady ? 'reminderDemo' : 'smsUnavailable');
   };
-  fetch('/api/booking-config')
-    .then((response) => response.json())
-    .then((data) => {
-      smsReady = data.smsConfigured === true;
-      renderSms();
-    })
-    .catch(renderSms);
+  renderSms();
   document.addEventListener('wash:language', renderSms);
 })();

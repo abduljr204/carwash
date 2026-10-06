@@ -20,7 +20,7 @@
       story: 'A little care goes a long way. Your next fresh start begins here.',
       loginTitle: 'Welcome back',
       signupTitle: 'Create your account',
-      loginIntro: 'Log in with your phone number and password.',
+      loginIntro: 'Log in with a test username and password.',
       signupIntro: 'Sign up with your phone number and a password.',
       phone: 'Phone number',
       phoneHint: 'Use your country code, or a Libyan number beginning with 09.',
@@ -33,14 +33,9 @@
       loginSwitch: 'New to Naqa Qurtuba?',
       signupSwitch: 'Already have an account?',
       mismatch: 'The passwords do not match.',
-      invalidPhone: 'Enter a valid international phone number or a Libyan mobile number.',
       pending: 'Please wait…',
-      unavailable: 'Unable to connect. Please try again shortly.',
-      server: 'Sign-in requires the app server. Open this site through its server address.',
       failed: 'Unable to sign in. Check your details and try again.',
-      duplicate: 'An account already exists for this number. Please log in.',
       credentials: 'Phone number or password is incorrect.',
-      limited: 'Too many attempts. Please try again in 15 minutes.',
     },
     ar: {
       results: 'قبل وبعد ↗',
@@ -72,14 +67,9 @@
       loginSwitch: 'جديد في نقاء قرطبة؟',
       signupSwitch: 'لديك حساب بالفعل؟',
       mismatch: 'كلمتا المرور غير متطابقتين.',
-      invalidPhone: 'أدخل رقم هاتف دولياً صحيحاً أو رقم هاتف محمول ليبياً.',
       pending: 'يرجى الانتظار…',
-      unavailable: 'تعذّر الاتصال. يرجى المحاولة لاحقاً.',
-      server: 'تسجيل الدخول يتطلب خادم التطبيق. افتح الموقع من عنوان الخادم.',
       failed: 'تعذّر تسجيل الدخول. تحقق من البيانات وحاول مجدداً.',
-      duplicate: 'يوجد حساب بهذا الرقم. يرجى تسجيل الدخول.',
       credentials: 'رقم الهاتف أو كلمة المرور غير صحيحة.',
-      limited: 'محاولات كثيرة. حاول مجدداً بعد 15 دقيقة.',
     },
   };
   let language = document.documentElement.lang;
@@ -88,52 +78,18 @@
   } catch {}
   const t = (key) => copy[language === 'ar' ? 'ar' : 'en'][key];
   const mode = document.body.dataset.auth;
-  const staffLogin = mode === 'login' && new URLSearchParams(location.search).get('staff') === '1';
-  if (mode && new URLSearchParams(location.search).get('next') === 'booking') {
-    document.querySelectorAll('a[href="login.html"],a[href="signup.html"]').forEach((link) => {
-      link.href += '?next=booking';
-    });
-  }
-  if (staffLogin) {
-    document.querySelector('.auth-tabs').hidden = true;
-    document.querySelector('.auth-switch').hidden = true;
-    const identity = document.getElementById('phone');
-    identity.id = 'username';
-    identity.name = 'username';
-    identity.type = 'text';
-    identity.autocomplete = 'username';
-    identity.placeholder = 'admin';
-    identity.removeAttribute('maxlength');
-    const label = document.querySelector('label[for="phone"]');
-    label.htmlFor = 'username';
-    label.dataset.account = 'username';
-    const hint = document.getElementById('phone-hint');
-    hint.id = 'username-hint';
-    hint.textContent = 'Use your staff username.';
-    identity.setAttribute('aria-describedby', 'username-hint');
-  }
-  let busy = false;
   function render() {
+    document.querySelectorAll('[data-account]').forEach((el) => {
+      if (t(el.dataset.account)) el.textContent = t(el.dataset.account);
+    });
     if (mode) {
       document.documentElement.lang = language;
       document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
-      document.title = t(mode + 'Title') + ' | Naqa Qurtuba';
-    }
-    document.querySelectorAll('[data-account]').forEach((el) => {
-      el.textContent = t(el.dataset.account);
-    });
-    document
-      .querySelectorAll('[data-auth-language]')
-      .forEach((el) =>
-        el.setAttribute('aria-pressed', String(el.dataset.authLanguage === language)),
-      );
-    if (busy) document.getElementById('auth-submit').textContent = t('pending');
-    if (staffLogin) {
-      document.getElementById('auth-title').textContent =
-        language === 'ar' ? 'دخول الموظفين' : 'Staff login';
-      document.querySelector('[data-account=loginIntro]').textContent =
-        language === 'ar' ? 'للموظفين المصرح لهم فقط.' : 'For authorized Naqa Qurtuba staff.';
-      document.getElementById('username-hint').textContent = 'Use your staff username.';
+      document
+        .querySelectorAll('[data-auth-language]')
+        .forEach((el) =>
+          el.setAttribute('aria-pressed', String(el.dataset.authLanguage === language)),
+        );
     }
   }
   document.addEventListener('wash:language', () => {
@@ -150,130 +106,42 @@
     }),
   );
   render();
-  async function request(endpoint, body) {
-    if (location.protocol === 'file:') throw new Error(t('server'));
-    let response;
-    try {
-      response = await fetch('/api/' + endpoint, {
-        method: body ? 'POST' : 'GET',
-        headers: body ? { 'Content-Type': 'application/json' } : {},
-        body: body ? JSON.stringify(body) : undefined,
-        signal: AbortSignal.timeout(15000),
-      });
-    } catch {
-      throw new Error(t('unavailable'));
-    }
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      throw new Error(t('server'));
-    }
-    if (!response.ok)
-      throw new Error(
-        response.status === 403
-          ? language === 'ar'
-            ? 'هذا الحساب غير مصرح له بدخول الموظفين.'
-            : 'This account does not have staff access.'
-          : t(
-              { 401: 'credentials', 409: 'duplicate', 429: 'limited' }[response.status] || 'failed',
-            ),
-      );
-    return data;
-  }
   const form = document.getElementById('auth-form');
   if (form) {
     const password = document.getElementById('password');
-    const toggle = document.getElementById('toggle-password');
-    toggle.addEventListener('click', () => {
+    document.getElementById('toggle-password').addEventListener('click', (e) => {
       const show = password.type === 'password';
       password.type = show ? 'text' : 'password';
-      toggle.dataset.account = show ? 'hide' : 'show';
-      toggle.setAttribute('aria-pressed', String(show));
+      e.currentTarget.dataset.account = show ? 'hide' : 'show';
+      e.currentTarget.setAttribute('aria-pressed', String(show));
       render();
     });
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (busy) return;
-      const error = document.getElementById('auth-error');
-      error.hidden = true;
-      const phone = document
-        .getElementById(staffLogin ? 'username' : 'phone')
-        .value.replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))
-        .replace(/[\s()-]/g, '');
-      try {
-        if (!staffLogin && !/^(?:\+[1-9]\d{7,14}|00[1-9]\d{7,14}|09\d{8})$/.test(phone))
-          throw new Error(t('invalidPhone'));
-        if (
-          mode === 'signup' &&
-          password.value !== document.getElementById('confirm-password').value
-        )
-          throw new Error(t('mismatch'));
-        busy = true;
-        document.getElementById('auth-submit').disabled = true;
-        form.setAttribute('aria-busy', 'true');
-        render();
-        await request(
-          staffLogin ? 'staff/login' : mode,
-          staffLogin
-            ? { username: phone, password: password.value }
-            : { phone, password: password.value },
-        );
-        location.assign(
-          staffLogin
-            ? 'staff.html'
-            : new URLSearchParams(location.search).get('next') === 'booking'
-              ? 'index.html'
-              : 'dashboard.html',
-        );
-      } catch (err) {
-        error.textContent = err.message;
-        error.hidden = false;
-      } finally {
-        busy = false;
-        document.getElementById('auth-submit').disabled = false;
-        form.removeAttribute('aria-busy');
-        render();
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const accounts = { admin: 'admin123', user: 'user123' };
+      if (!Object.hasOwn(accounts, username) || accounts[username] !== password.value) {
+        alert('Incorrect username or password.');
+        return;
       }
+      WashDemo.save('account', username);
+      location.assign((username === 'admin' ? 'staff.html' : 'dashboard.html') + '#' + username);
     });
   }
   const account = document.querySelector('.account-status');
-  if (account && location.protocol !== 'file:')
-    request('session')
-      .then(({ user }) => {
-        if (!user) return;
-        account.replaceChildren();
-        const phone = document.createElement('span');
-        phone.dir = 'ltr';
-        phone.textContent = user.phone;
-        const logout = document.createElement('button');
-        logout.type = 'button';
-        logout.dataset.account = 'logout';
-        const error = document.createElement('span');
-        error.setAttribute('role', 'alert');
-        logout.addEventListener('click', async () => {
-          logout.disabled = true;
-          try {
-            await request('logout', {});
-            location.reload();
-          } catch (err) {
-            error.textContent = err.message;
-            logout.disabled = false;
-          }
-        });
-        const dashboard = document.createElement('a');
-        dashboard.href = 'dashboard.html';
-        dashboard.className = 'account-link';
-        const updateLink = () => {
-          dashboard.textContent =
-            document.documentElement.lang === 'ar' ? 'مواعيدي' : 'My appointments';
-        };
-        updateLink();
-        document.addEventListener('wash:language', updateLink);
-        account.append(dashboard, phone, logout, error);
-        render();
-      })
-      .catch(() => {
-        /* Keep account links available if the server is offline. */
-      });
+  const username = WashDemo.read('account', null);
+  if (account && username) {
+    account.replaceChildren();
+    const link = document.createElement('a');
+    link.className = 'account-link';
+    link.href = username === 'admin' ? 'staff.html' : 'dashboard.html';
+    link.textContent = username === 'admin' ? 'Admin dashboard' : 'My dashboard';
+    const logout = document.createElement('button');
+    logout.textContent = 'Log out';
+    logout.addEventListener('click', () => {
+      WashDemo.save('account', null);
+      location.reload();
+    });
+    account.append(link, logout);
+  }
 })();

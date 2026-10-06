@@ -6,7 +6,7 @@
     <title>Staff dashboard | Naqa Qurtuba</title>
     <link rel="stylesheet" href="journey/styles.css" />
     <link rel="stylesheet" href="journey/manage.css" />
-    <script defer src="vendor/jsqr.js"></script>
+    <script defer src="journey/demo.js"></script>
     <script defer src="journey/manage.js"></script>
   </head>
   <body data-dashboard="staff">
@@ -50,11 +50,15 @@
           </button>
         </div>
       </form>
+      <nav class="manage-tabs" aria-label="Appointments">
+        <button type="button" data-tab="active" aria-current="page">Active bookings</button>
+        <button type="button" data-tab="past">Past washes</button>
+      </nav>
       <div class="staff-list-heading">
-        <h2 data-m="arrivalQueue">Arrival queue</h2>
+        <h2 data-m="arrivalQueue">Appointments</h2>
         <button class="back-button" id="refresh" data-m="refresh">Refresh</button>
       </div>
-      <section id="bookings" aria-live="polite" aria-label="Today's appointments">
+      <section id="bookings" aria-live="polite" aria-label="Appointments">
         <p data-m="loading">Loading appointments…</p>
       </section>
     </main>

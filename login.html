@@ -7,6 +7,7 @@
     <title>Welcome back | Naqa Qurtuba</title>
     <link rel="stylesheet" href="journey/styles.css" />
     <link rel="stylesheet" href="journey/account.css" />
+    <script defer src="journey/demo.js"></script>
     <script defer src="journey/account.js"></script>
   </head>
   <body data-auth="login">
@@ -64,27 +65,22 @@
         </div>
       </section>
       <section class="auth-card" aria-labelledby="auth-title">
-        <nav class="auth-tabs" aria-label="Account">
-          <a href="login.html" aria-current="page" data-account="login">Log in</a
-          ><a href="signup.html" data-account="signup">Sign up</a>
-        </nav>
+        <p class="eyebrow">BROWSER DEMO</p>
         <h2 id="auth-title" data-account="loginTitle">Welcome back</h2>
-        <p data-account="loginIntro">Log in with your phone number and password.</p>
-        <form id="auth-form" method="post" action="/api/login">
-          <label for="phone" data-account="phone">Phone number</label
+        <p data-account="loginIntro">Log in with a test username and password.</p>
+        <form id="auth-form" novalidate>
+          <label for="username" data-account="username">Username</label
           ><input
-            id="phone"
-            name="phone"
-            type="tel"
-            autocomplete="tel"
+            id="username"
+            name="username"
+            type="text"
+            autocomplete="username"
             dir="ltr"
-            placeholder="+218 91 210 3120"
+            placeholder="admin or user"
             required
             maxlength="30"
             aria-describedby="phone-hint"
-          /><small id="phone-hint" data-account="phoneHint"
-            >Use your country code, or a Libyan number beginning with 09.</small
-          >
+          /><small id="phone-hint">Test accounts: admin / admin123 or user / user123.</small>
           <label for="password" data-account="password">Password</label>
           <div class="password-field">
             <input
@@ -93,7 +89,6 @@
               type="password"
               autocomplete="current-password"
               required
-              minlength="8"
               maxlength="128"
               aria-describedby="password-hint"
             /><button
@@ -106,18 +101,15 @@
               Show
             </button>
           </div>
-          <small id="password-hint" data-account="passwordHint">Use 8&ndash;128 characters.</small>
+          <small id="password-hint">Enter the test account password.</small>
 
           <p id="auth-error" class="auth-error" role="alert" hidden></p>
           <button class="primary-button" id="auth-submit" type="submit" data-account="login">
             Log in
           </button>
         </form>
-        <p class="auth-switch">
-          <span data-account="loginSwitch">New to Naqa Qurtuba?</span>
-          <a href="signup.html" data-account="signup">Sign up</a>
-        </p>
-        <noscript>Enable JavaScript to sign in securely.</noscript>
+        <p class="auth-switch">Demo accounts only. No registration required.</p>
+        <noscript>Enable JavaScript to try this browser-only demo.</noscript>
       </section>
     </main>
   </body>

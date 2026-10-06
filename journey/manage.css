@@ -33,7 +33,7 @@
   border: 0;
   border-bottom: 2px solid transparent;
 }
-.manage-tabs button[aria-current] {
+.manage-tabs button[aria-current='page'] {
   color: var(--brand-primary);
   border-color: var(--brand-primary);
 }
@@ -290,5 +290,109 @@
   .pass-details dt,
   .receipt-total {
     color: black;
+  }
+}
+
+/* Structured appointment cards share the same layout in both dashboard modes. */
+.appointment-card {
+  background: #191d1b;
+  color: #f4f6f2;
+  border: 1px solid #343c36;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px #00000020;
+}
+.appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 26px 28px;
+  border-bottom: 1px solid #343c36;
+}
+.appointment-label {
+  color: #aab5ac;
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  margin: 0 0 10px;
+}
+.appointment-header h2 {
+  margin: 0;
+  font-size: 23px;
+}
+.appointment-badge {
+  border: 1px solid #697441;
+  background: #30371f;
+  color: #e0efaa;
+  border-radius: 30px;
+  padding: 7px 12px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.appointment-badge.completed {
+  background: #203a2b;
+  border-color: #426b50;
+  color: #aff0c5;
+}
+.appointment-details {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  padding: 26px 28px;
+  margin: 0;
+}
+.appointment-details dt {
+  color: #aab5ac;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.appointment-details dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.appointment-extras {
+  padding: 0 28px 22px;
+  color: #c2cdc4;
+  margin: 0;
+}
+.appointment-management {
+  border-top: 1px solid #343c36;
+  background: #202620;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 28px;
+}
+.appointment-management h3 {
+  font-size: 13px;
+  color: #dfff00;
+  margin: 0 0 8px;
+}
+.appointment-management p {
+  color: #c2cdc4;
+  line-height: 1.6;
+  margin: 0;
+}
+.appointment-management .primary-button {
+  flex-shrink: 0;
+}
+@media (max-width: 650px) {
+  .appointment-header,
+  .appointment-details,
+  .appointment-management {
+    padding: 20px;
+  }
+  .appointment-details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .appointment-management {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .appointment-header h2 {
+    font-size: 20px;
   }
 }
