@@ -1,0 +1,42 @@
+const { test, after, before } = require('node:test');
+const assert = require('node:assert/strict');
+const { spawn } = require('node:child_process');
+const { mkdtempSync, rmSync } = require('node:fs');
+const { tmpdir } = require('node:os');
+const { join } = require('node:path');
+const { DatabaseSync } = require('node:sqlite');
+const dataDir = mkdtempSync(join(tmpdir(), 'naqa-auth-'));
+const base = 'http://127.0.0.1:3187';
+let child;
+before(async () => {
+  child = spawn(process.execPath, ['server.js'], { env: { ...process.env, PORT: '3187', DATA_DIR: dataDir }, stdio: ['ignore', 'pipe', 'pipe'] });
+  await new Promise((resolve, reject) => { child.stdout.once('data', resolve); child.once('error', reject); child.once('exit', code => reject(new Error('Server exited: ' + code))); });
+});
+after(async () => { if (child && child.exitCode === null) { child.kill(); await new Promise(resolve => child.once('exit', resolve)); } rmSync(dataDir, { recursive: true, force: true }); });
+const post = (route, body, extra = {}) => fetch(base + '/api/' + route, { method: 'POST', headers: { 'Content-Type': 'application/json', ...extra }, body: JSON.stringify(body) });
+test('signup, normalization, password storage, login, persistent session, logout', async () => {
+  const body = { phone: '091 234 5678', password: 'A long test password!' };
+  const signup = await post('signup', body);
+  assert.equal(signup.status, 200);
+  assert.equal((await signup.json()).user.phone, '+218912345678');
+  const cookie = signup.headers.get('set-cookie');
+  assert.match(cookie, /HttpOnly/); assert.match(cookie, /SameSite=Lax/);
+  const headers = { Cookie: cookie.split(';')[0] };
+  const db = new DatabaseSync(join(dataDir, 'accounts.sqlite'));
+  const user = db.prepare('SELECT * FROM users').get();
+  assert.notEqual(user.hash, body.password); assert.equal(user.hash.length, 128); db.close();
+  assert.equal((await (await fetch(base + '/api/session', { headers })).json()).user.phone, '+218912345678');
+  assert.equal((await post('signup', { ...body, phone: '+218912345678' })).status, 409);
+  assert.equal((await post('login', { ...body, password: 'wrong-password' })).status, 401);
+  assert.equal((await post('login', { ...body, phone: '00218912345678' })).status, 200);
+  assert.equal((await post('logout', {}, headers)).status, 200);
+  assert.equal((await (await fetch(base + '/api/session', { headers })).json()).user, null);
+});
+test('validation and private-file protection', async () => {
+  assert.equal((await post('signup', { phone: 'bad', password: 'password' })).status, 400);
+  assert.equal((await post('signup', { phone: '+218912345679', password: 'short' })).status, 400);
+  assert.equal((await post('signup', null)).status, 400);
+  assert.equal((await post('login', {}, { Origin: 'https://untrusted.example' })).status, 403);
+  for (const url of ['/.data/accounts.sqlite', '/server.js', '/package.json']) assert.equal((await fetch(base + url)).status, 404);
+  for (const url of ['/', '/login.html', '/signup.html', '/assets/wash-pair.png']) assert.equal((await fetch(base + url)).status, 200);
+});

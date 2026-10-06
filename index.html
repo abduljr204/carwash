@@ -10,7 +10,7 @@
     </title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='12' fill='%23111310'/%3E%3Ctext x='30' y='44' text-anchor='middle' font-size='42' font-family='Arial' fill='%23dfff00'%3EQ%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="journey/styles.css">
-    <link rel="stylesheet" href="journey/wipe.css">
+    <link rel="stylesheet" href="journey/account.css">
     <!-- Dependency-free modules, loaded in dependency order. Works as local files. -->
     <script defer src="journey/config.js">
     </script>
@@ -22,7 +22,7 @@
     </script>
     <script defer src="journey/app.js">
     </script>
-    <script defer src="journey/wipe.js"></script>
+    <script defer src="journey/account.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#step-title" data-t="skip">
@@ -54,7 +54,8 @@
         </span>
       </div>
       <div class="header-actions">
-        <a class="proof-jump" href="#wash-yourself" data-proof="jump">Try the shine ↗</a>
+        <a class="proof-jump" href="#wash-results" data-account="results">Before &amp; after ↗</a>
+        <div class="account-status"><a class="account-link" href="login.html" data-account="login">Log in</a><a class="account-link" href="signup.html" data-account="signup">Sign up</a></div>
         <a class="call-link" href="tel:+218912103120" data-t="help">
           Need a hand?
         </a>
@@ -428,39 +429,15 @@
       <p class="demo-disclaimer" data-t="demo">
         Prototype only. No appointment is reserved. Call 091 210 3120 to book with the team.
       </p>
-      <!-- ================================================================
-         5. WASH IT YOURSELF — independent, replayable visual experience.
-         The paired photo is cropped at runtime, never stretched or mirrored.
-         The clean layer stays fixed; pointer strokes erase the dirty layer.
-         ================================================================ -->
-      <section class="wipe-section" id="wash-yourself" aria-labelledby="wipe-title">
-        <div class="wipe-story">
-          <p class="eyebrow" data-proof="eyebrow">A LITTLE DIRT. A BIG REVEAL.</p>
-          <h2 id="wipe-title"><span data-proof="title">Don't just see it.</span><em data-proof="titleAccent">Wash it yourself.</em></h2>
-          <p class="wipe-description" id="wipe-help" data-proof="description">Grab an imaginary wash mitt. Drag across the car and uncover the shine, one swipe at a time.</p>
-          <div class="wipe-instructions"><span aria-hidden="true">↔</span><p data-proof="instructions">Click + drag on desktop. Swipe with your finger on mobile.</p></div>
-          <div class="wipe-score">
-            <div class="wipe-score-heading"><span data-proof="progress">SHINE UNLOCKED</span><strong id="wipe-percent">0%</strong></div>
-            <progress id="wipe-progress" value="0" max="100" aria-label="Shine unlocked"></progress>
-            <p id="wipe-status" role="status" aria-live="polite">Your first swipe starts the transformation.</p>
-          </div>
-          <div class="wipe-actions">
-            <button id="wipe-reset" class="back-button" type="button" disabled><span aria-hidden="true">↺ </span><span data-proof="reset">Make it dirty again</span></button>
-            <button id="wipe-reveal" class="back-button" type="button" disabled data-proof="reveal">Reveal the finish</button>
-          </div>
-          <p class="wipe-note" data-proof="note">Illustrative demo imagery. Your swipes don't change your booking.</p>
+      <section class="comparison" id="wash-results" aria-labelledby="results-title">
+        <p class="eyebrow" data-account="eyebrow">A LITTLE DIRT. A BIG DIFFERENCE.</p>
+        <h2 id="results-title" data-account="heading">See the shine.</h2>
+        <p data-account="description">From everyday dust to a fresh finish. See the difference a little care can make.</p>
+        <div class="photo-pair">
+          <figure><div class="photo-crop"><img src="assets/wash-pair.png" alt="Black sedan before washing, covered in dirt" width="1774" height="887" loading="lazy"></div><figcaption data-account="before">BEFORE</figcaption></figure>
+          <figure><div class="photo-crop after"><img src="assets/wash-pair.png" alt="The same black sedan after washing, clean and polished" width="1774" height="887" loading="lazy"></div><figcaption data-account="after">AFTER</figcaption></figure>
         </div>
-        <figure class="wipe-figure">
-          <div class="wipe-board" id="wipe-board" data-state="loading" aria-busy="true">
-            <canvas id="wipe-clean" width="1000" height="800" aria-hidden="true"></canvas>
-            <canvas id="wipe-dirt" width="1000" height="800" role="img" aria-label="Dirty car. Drag or swipe to reveal the clean finish." aria-describedby="wipe-help"></canvas>
-            <span class="wipe-image-tag" id="wipe-image-tag">BEFORE / YOUR TURN</span>
-            <div class="wipe-start-hint" aria-hidden="true"><span>↔</span><span data-proof="startHint">Swipe to shine</span></div>
-            <span class="wipe-mitt" id="wipe-mitt" aria-hidden="true"></span>
-            <div class="wipe-celebration" aria-hidden="true"><span>✦</span><span data-proof="completeBadge">SHINE UNLOCKED</span></div>
-          </div>
-          <figcaption><span data-proof="caption">ONE CAR. TWO VERY DIFFERENT FEELINGS.</span><span aria-hidden="true">NQ / 01</span></figcaption>
-        </figure>
+        <p class="quiet-note" data-account="note">Illustrative before-and-after imagery.</p>
       </section>
     </main>
     <!-- ================================================================
