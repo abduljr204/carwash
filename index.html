@@ -348,40 +348,14 @@
                   Send me a reminder
                 </strong>
                 <small data-t="reminderSub">
-                  Optional SMS or email
+                  SMS to your account phone, 1 hour before
                 </small>
               </span>
               <input id="reminder" type="checkbox" role="switch">
               <span class="switch-track" aria-hidden="true">
               </span>
             </label>
-            <div id="reminder-settings" hidden>
-              <fieldset class="reminder-channels">
-                <legend class="sr-only" data-t="channel">
-                  Reminder channel
-                </legend>
-                <label>
-                  <input type="radio" name="channel" value="sms" checked>
-                  <span data-t="sms">
-                    SMS
-                  </span>
-                </label>
-                <label>
-                  <input type="radio" name="channel" value="email">
-                  <span data-t="email">
-                    Email
-                  </span>
-                </label>
-              </fieldset>
-              <label class="contact-label">
-                <span id="contact-label">
-                </span>
-                <input id="contact" autocomplete="tel" type="tel" dir="ltr">
-              </label>
-              <p class="quiet-note" data-t="reminderDemo">
-                Preview only. No messages are sent.
-              </p>
-            </div>
+            <p class="quiet-note" id="sms-availability" data-t="reminderDemo">SMS reminders go to your account phone number 1 hour before your appointment.</p>
             <label class="policy-accept">
               <input id="accept-policy" type="checkbox">
               <span data-t="accept">
@@ -427,7 +401,7 @@
         </div>
       </footer>
       <p class="demo-disclaimer" data-t="demo">
-        Prototype only. No appointment is reserved. Call 091 210 3120 to book with the team.
+        Manage your bookings and check-in pass in My appointments. Payment is collected at the wash.
       </p>
       <section class="comparison" id="wash-results" aria-labelledby="results-title">
         <p class="eyebrow" data-account="eyebrow">A LITTLE DIRT. A BIG DIFFERENCE.</p>
@@ -440,40 +414,7 @@
         <p class="quiet-note" data-account="note">Illustrative before-and-after imagery.</p>
       </section>
     </main>
-    <!-- ================================================================
-       5. CONFIRMATION — local preview, no submission or payment gateway.
-       ================================================================ -->
-    <dialog id="confirmation" aria-labelledby="confirmation-title">
-      <button id="close-confirmation" class="close-dialog" type="button" data-label="close" aria-label="Close confirmation">
-        ×
-      </button>
-      <div class="success-icon" aria-hidden="true">
-        ✓
-      </div>
-      <p class="eyebrow" data-t="finishLabel">
-        YOUR NEXT FRESH START
-      </p>
-      <h2 id="confirmation-title" data-t="finishTitle">
-        Looking sharp.
-      </h2>
-      <p data-t="previewOnly">
-        Your booking preview is ready. No appointment has been reserved.
-      </p>
-      <dl id="confirmation-details">
-      </dl>
-      <p class="payment-message" data-t="payment">
-        Pay in person at the car wash location.
-      </p>
-      <p class="confirmation-policy" data-t="policy">
-        Appointments have a strict 30-minute grace period. If you are more than 30 minutes late, your spot will be forfeited.
-      </p>
-      <a class="primary-button" href="tel:+218912103120" data-t="callBook">
-        Call to book: 091 210 3120
-      </a>
-      <button id="edit-booking" class="back-button" type="button" data-t="edit">
-        Edit my selection
-      </button>
-    </dialog>
+    <footer class="staff-footer"><a href="login.html?staff=1" data-t="staffLogin">Staff login</a></footer>
     <noscript>
       <p class="no-script">
         Enable JavaScript to use the interactive wash builder. Call 091 210 3120 to book. / فعّل جافاسكريبت لتجربة الحجز أو اتصل بنا.

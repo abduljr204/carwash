@@ -4,6 +4,8 @@ const { randomBytes, scrypt, timingSafeEqual, createHash } = require('node:crypt
 const { promisify } = require('node:util');
 const fs = require('node:fs');
 const path = require('node:path');
+const { createAppointments } = require('./appointments');
+const { configured, createReminderWorker } = require('./reminders');
 const derive = promisify(scrypt);
 const dataDir = process.env.DATA_DIR || path.join(__dirname, '.data');
 fs.mkdirSync(dataDir, { recursive: true });
@@ -17,6 +19,19 @@ const normalize = value => {
   return /^\+[1-9]\d{7,14}$/.test(phone) ? phone : null;
 };
 const attempts = new Map();
+const appointments = createAppointments({ db, normalize, smsConfigured: configured });
+if (process.argv[2] === '--staff') {
+  const phone = normalize(process.argv[3]);
+  if (!phone || !db.prepare('SELECT phone FROM users WHERE phone=?').get(phone)) {
+    console.error('First create a customer account, then run: node server.js --staff +218...');
+    process.exit(1);
+  }
+  db.prepare('INSERT OR IGNORE INTO staff VALUES (?)').run(phone);
+  console.log('Staff access granted to ' + phone);
+  db.close();
+  process.exit(0);
+}
+createReminderWorker(db);
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
   const reply = (status, body, headers = {}) => { res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...headers }); res.end(JSON.stringify(body)); };
@@ -24,9 +39,24 @@ const server = http.createServer(async (req, res) => {
   try {
     if (url.pathname.startsWith('/api/')) {
       const token = (req.headers.cookie || '').split(';').map(s => s.trim()).find(s => s.startsWith('naqa_session='))?.slice(13) || '';
+      const session = db.prepare('SELECT phone FROM sessions WHERE token = ? AND expires > ?').get(digest(token), Date.now());
+      if (session) session.role = db.prepare('SELECT phone FROM staff WHERE phone=?').get(session.phone) ? 'staff' : 'customer';
       if (req.method === 'GET' && url.pathname === '/api/session') {
-        const session = db.prepare('SELECT phone FROM sessions WHERE token = ? AND expires > ?').get(digest(token), Date.now());
         return reply(200, { user: session || null });
+      }
+      const authPath = ['/api/login', '/api/signup', '/api/staff/login'].includes(url.pathname);
+      if (!authPath && url.pathname !== '/api/logout') {
+        let body;
+        if (req.method !== 'GET') {
+          if (req.method !== 'POST') return reply(405, { error: 'Method not allowed.' });
+          if (req.headers.origin && new URL(req.headers.origin).host !== req.headers.host) return reply(403, { error: 'Request origin rejected.' });
+          if (!req.headers['content-type']?.startsWith('application/json')) return reply(415, { error: 'JSON required.' });
+          let raw = '';
+          for await (const chunk of req) { raw += chunk; if (Buffer.byteLength(raw) > 8192) return reply(413, { error: 'Request too large.' }); }
+          try { body = JSON.parse(raw); } catch { return reply(400, { error: 'Invalid request.' }); }
+        }
+        if (await appointments(req, url, session, body, reply)) return;
+        return reply(404, { error: 'Not found.' });
       }
       if (req.method !== 'POST') return reply(405, { error: 'Method not allowed.' });
       if (req.headers.origin && new URL(req.headers.origin).host !== req.headers.host) return reply(403, { error: 'Request origin rejected.' });
@@ -34,7 +64,7 @@ const server = http.createServer(async (req, res) => {
         db.prepare('DELETE FROM sessions WHERE token = ?').run(digest(token));
         return reply(200, { ok: true }, { 'Set-Cookie': cookie('', 0) });
       }
-      if (!['/api/login', '/api/signup'].includes(url.pathname)) return reply(404, { error: 'Not found.' });
+      if (!authPath) return reply(404, { error: 'Not found.' });
       const now = Date.now();
       for (const [key, entry] of attempts) if (entry.until < now) attempts.delete(key);
       const ip = req.socket.remoteAddress;
@@ -56,19 +86,22 @@ const server = http.createServer(async (req, res) => {
         try { db.prepare('INSERT INTO users VALUES (?, ?, ?)').run(phone, salt, hash.toString('hex')); }
         catch (error) { if (error.code === 'ERR_SQLITE_ERROR' && error.message.includes('UNIQUE')) return reply(409, { error: 'An account already exists for this phone number. Please log in.' }); throw error; }
       } else if (!user || !timingSafeEqual(hash, Buffer.from(user.hash, 'hex'))) return reply(401, { error: 'Phone number or password is incorrect.' });
+      const role = db.prepare('SELECT phone FROM staff WHERE phone=?').get(phone) ? 'staff' : 'customer';
+      if (url.pathname === '/api/staff/login' && role !== 'staff') return reply(403, { error: 'This account does not have staff access.' });
+      if (token) db.prepare('DELETE FROM sessions WHERE token=?').run(digest(token));
       db.prepare('DELETE FROM sessions WHERE expires <= ?').run(now);
       const sessionToken = randomBytes(32).toString('hex');
       db.prepare('INSERT INTO sessions VALUES (?, ?, ?)').run(digest(sessionToken), phone, now + 86400000);
-      return reply(200, { user: { phone } }, { 'Set-Cookie': cookie(sessionToken, 86400) });
+      return reply(200, { user: { phone, role } }, { 'Set-Cookie': cookie(sessionToken, 86400) });
     }
     if (!['GET', 'HEAD'].includes(req.method)) return reply(405, { error: 'Method not allowed.' });
     const name = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
-    if (!/^(index|login|signup)\.html$/.test(name) && !/^(journey|assets)\/[\w-]+\.(js|css|png)$/.test(name)) return reply(404, { error: 'Not found.' });
-    const file = path.join(__dirname, name);
+    if (!/^(index|login|signup|dashboard|staff)\.html$/.test(name) && name !== 'vendor/jsqr.js' && !/^(journey|assets)\/[\w-]+\.(js|css|png)$/.test(name)) return reply(404, { error: 'Not found.' });
+    const file = name === 'vendor/jsqr.js' ? require.resolve('jsqr') : path.join(__dirname, name);
     if (!fs.existsSync(file)) return reply(404, { error: 'Not found.' });
     res.writeHead(200, { 'Content-Type': ({ '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png' })[path.extname(file)], 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'same-origin', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'; form-action 'self'" });
     if (req.method === 'HEAD') return res.end();
     fs.createReadStream(file).pipe(res);
-  } catch (error) { console.error(error); if (!res.headersSent) reply(500, { error: 'Something went wrong. Please try again.' }); else res.end(); }
+  } catch (error) { if (!error.status) console.error(error); if (!res.headersSent) reply(error.status || 500, { error: error.status ? error.message : 'Something went wrong. Please try again.' }); else res.end(); }
 });
 server.listen(Number(process.env.PORT || 3000), process.env.HOST || '127.0.0.1', () => console.log('Naqa Qurtuba running on http://localhost:' + (process.env.PORT || 3000)));

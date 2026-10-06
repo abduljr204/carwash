@@ -3,7 +3,7 @@
    Owns state, step validation, dates, events and accessible UI rendering.
    Pricing is delegated exclusively to pricing.js.
    Animation is delegated exclusively to motion.js.
-   No network requests, online payment, or customer-data persistence.
+   Bookings are saved by the authenticated appointment API. Payment is recorded by staff.
    ==================================================================== */
 (() => {
   'use strict';
@@ -27,9 +27,7 @@
     addons: [],
     date: '',
     time: '',
-    reminders: false,
-    channel: 'sms',
-    contacts: { sms: '', email: '' },
+    reminders: true,
     policyAccepted: false,
     calendarMonth: '',
     errorKey: ''
@@ -70,6 +68,7 @@
   function isTimeAvailable(dateKey, time) {
     const now = getBusinessClock();
     return config.timeSlots.includes(time) && dateKey >= now.date && dateKey <= getLastBookingDate()
+      && Date.parse(`${dateKey}T${time}:00+02:00`) <= Date.now() + config.bookingHorizonDays * 86400000
       && (dateKey > now.date || time > now.time);
   }
   function isDateAvailable(dateKey) { return config.timeSlots.some(time => isTimeAvailable(dateKey, time)); }
@@ -230,16 +229,7 @@
   }
   function renderReminderSettings() {
     element('reminder').checked = state.reminders;
-    element('reminder-settings').hidden = !state.reminders;
-    element('contact-label').textContent = t(state.channel === 'sms' ? 'phone' : 'emailAddress');
-    element('contact').type = state.channel === 'sms' ? 'tel' : 'email';
-    element('contact').autocomplete = state.channel === 'sms' ? 'tel' : 'email';
-    element('contact').placeholder = state.channel === 'sms' ? '091 210 3120' : 'you@example.com';
-    element('contact').value = state.contacts[state.channel];
-    element('contact').disabled = !state.reminders;
-    element('contact').required = state.reminders;
     element('accept-policy').checked = state.policyAccepted;
-    document.querySelectorAll('[name=channel]').forEach(input => { input.checked = input.value === state.channel; });
   }
 
   // ------------------------------------------------------------------
@@ -291,7 +281,6 @@
     refreshQuote();
     motion.updatePartHighlights(state);
     if (state.errorKey) showError(state.errorKey, false);
-    if (element('confirmation').open) renderConfirmation();
   }
 
   // ------------------------------------------------------------------
@@ -323,7 +312,7 @@
     element('lab-layout').scrollIntoView({ block: 'start', behavior: 'auto' });
   }
   function advanceStep() {
-    if (state.step === 4) { confirmBookingPreview(); return; }
+    if (state.step === 4) { submitBooking(); return; }
     if (state.step === 2 && !validatePackage()) return;
     state.furthestStep = Math.max(state.furthestStep, state.step + 1);
     goToStep(state.step + 1);
@@ -331,39 +320,33 @@
   function validateScheduling() {
     if (!isTimeAvailable(state.date, state.time)) { renderCalendar(); renderTimeSlots(); showError('errorDate'); return false; }
     if (!state.policyAccepted) { showError('errorPolicy'); return false; }
-    if (state.reminders) {
-      const value = state.contacts[state.channel].trim();
-      // Normalize Arabic/Persian digits for validation, preserving the field.
-      const normalized = value.replace(/[٠-٩]/g, char => String(char.charCodeAt(0) - 1632)).replace(/[۰-۹]/g, char => String(char.charCodeAt(0) - 1776));
-      const digits = normalized.replace(/[^0-9]/g, '');
-      const validPhone = /^[+0-9() .-]+$/.test(normalized) && digits.length >= 7 && digits.length <= 15;
-      const validEmail = value.length > 0 && element('contact').validity.valid;
-      if (state.channel === 'sms' ? !validPhone : !validEmail) { showError(state.channel === 'sms' ? 'errorPhone' : 'errorEmail'); return false; }
-    }
     return true;
   }
-  function renderConfirmation() {
-    const quote = pricing.calculateQuote(state, config);
-    const rows = [
-      ['vehicle', t(state.vehicleId)], ['wash', t(quote.packageId)],
-      ['extras', quote.addons.map(addon => t(addon.id)).join(' + ') || t('none')],
-      ['appointment', `${formatDate(state.date, { weekday: 'short' })} · ${formatTime(state.time)}`],
-      ['reminders', state.reminders ? `${t(state.channel)} ${t('previewSuffix')}` : t('off')],
-      ['total', formatMoney(quote.total)]
-    ];
-    // Use textContent for every value, including any future user data.
-    element('confirmation-details').replaceChildren(...rows.map(([key, value]) => {
-      const row = document.createElement('div');
-      const term = document.createElement('dt'); term.textContent = t(key);
-      const detail = document.createElement('dd'); detail.textContent = value;
-      row.append(term, detail); return row;
-    }));
-  }
-  function confirmBookingPreview() {
-    if (!validatePackage() || !validateScheduling()) return;
+  let submitting = false;
+  let requestKey = crypto.randomUUID();
+  let requestFingerprint = '';
+  async function submitBooking() {
+    if (submitting || !validatePackage() || !validateScheduling()) return;
     clearError();
-    renderConfirmation();
-    element('confirmation').showModal();
+    submitting = true; element('next-step').disabled = true;
+    const payload = { date: state.date, time: state.time, vehicle: { type: state.vehicleId }, package: pricing.getPackageId(state), addons: state.addons, reminder: state.reminders };
+    const fingerprint = JSON.stringify(payload);
+    if (requestFingerprint && requestFingerprint !== fingerprint) requestKey = crypto.randomUUID();
+    requestFingerprint = fingerprint;
+    try {
+      const response = await fetch('/api/appointments', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ ...payload, requestKey }), signal: AbortSignal.timeout(20000) });
+      if (response.status === 401) {
+        try { sessionStorage.setItem('naqa-booking-draft', JSON.stringify({ state, requestKey })); } catch {}
+        location.assign('login.html?next=booking'); return;
+      }
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || t('bookingError'));
+      try { sessionStorage.removeItem('naqa-booking-draft'); } catch {}
+      location.assign('dashboard.html');
+    } catch (error) {
+      element('step-error').textContent = error.name === 'TimeoutError' || error.name === 'TypeError' ? t('bookingError') : error.message;
+      element('step-error').hidden = false;
+    } finally { submitting = false; element('next-step').disabled = false; }
   }
 
   // ------------------------------------------------------------------
@@ -403,17 +386,25 @@
       target?.focus();
     });
     element('reminder').addEventListener('change', event => { state.reminders = event.target.checked; clearError(); renderReminderSettings(); });
-    document.querySelectorAll('[name=channel]').forEach(input => input.addEventListener('change', () => { state.channel = input.value; clearError(); renderReminderSettings(); }));
-    element('contact').addEventListener('input', event => { state.contacts[state.channel] = event.target.value; clearError(); });
     element('accept-policy').addEventListener('change', event => { state.policyAccepted = event.target.checked; clearError(); });
     document.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => i18n.setLanguage(button.dataset.language)));
     document.addEventListener('wash:language', renderAll);
-    element('close-confirmation').addEventListener('click', () => element('confirmation').close());
-    element('edit-booking').addEventListener('click', () => element('confirmation').close());
   }
 
   // Initialize only after defer-loaded HTML and dependencies are ready.
   state.calendarMonth = getBusinessClock().date.slice(0, 7);
+  try {
+    const draft = JSON.parse(sessionStorage.getItem('naqa-booking-draft') || 'null');
+    if (draft && config.vehicles.some(v => v.id === draft.state?.vehicleId)) {
+      for (const key of ['vehicleId','exterior','interior','addons','date','time','reminders','policyAccepted']) if (key in draft.state) state[key] = draft.state[key];
+      state.step = 4; state.furthestStep = 4;
+      requestKey = draft.requestKey || requestKey;
+    }
+  } catch { /* An unavailable or invalid draft does not prevent booking. */ }
   bindEvents();
   renderAll();
+  let smsReady = false;
+  const renderSms = () => { element('sms-availability').textContent = t(smsReady ? 'reminderDemo' : 'smsUnavailable'); };
+  fetch('/api/booking-config').then(response => response.json()).then(data => { smsReady = data.smsConfigured === true; renderSms(); }).catch(renderSms);
+  document.addEventListener('wash:language', renderSms);
 })();

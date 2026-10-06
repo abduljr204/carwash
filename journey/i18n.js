@@ -7,6 +7,7 @@
   'use strict';
   const catalog = {
     en: {
+      staffLogin:'Staff login', bookingError:'Unable to save your booking. Check your connection and try again.', smsUnavailable:'SMS delivery is not configured yet. Your appointment will still be saved in My appointments.',
       pageTitle:'Naqa Qurtuba | The Wash Lab', skip:'Skip to booking', brand:'NAQA QURTUBA',brandSub:'CAR CARE / TRIPOLI',lab:'THE WASH LAB',help:'Need a hand?',language:'Language',
       introLabel:'A LITTLE PLAY. A LOT OF SHINE.',intro:'Your car. Your clean.',prototype:'Interactive preview · sample USD prices',steps:'Booking steps',carStage:'Interactive vehicle',livePreview:'LIVE CONFIGURATION',topView:'TOP VIEW / INTERACTIVE',
       step1:'Your ride',step2:'Your wash',step3:'The extras',step4:'Your time',
@@ -33,6 +34,7 @@
       noPackage:'Select a wash package',noExtras:'No extras',stepOf:'STEP',of:'OF',calendarNote:'Sample availability · next 30 days'
     },
     ar: {
+      staffLogin:'دخول الموظفين', bookingError:'تعذّر حفظ الحجز. تحقق من الاتصال وحاول مجدداً.', smsUnavailable:'الرسائل غير مفعلة بعد. سيُحفظ حجزك في صفحة مواعيدي.',
       pageTitle:'نقاء قرطبة | مختبر العناية',skip:'انتقل إلى الحجز',brand:'نقاء قرطبة',brandSub:'العناية بالسيارات / طرابلس',lab:'مختبر العناية',help:'تحتاج مساعدة؟',language:'اللغة',
       introLabel:'تجربة ممتعة. ولمعان يليق بك.',intro:'سيارتك. عناية على ذوقك.',prototype:'تجربة تفاعلية · أسعار توضيحية بالدولار',steps:'خطوات الحجز',carStage:'السيارة التفاعلية',livePreview:'تخصيص مباشر',topView:'من الأعلى / تفاعلي',
       step1:'سيارتك',step2:'غسلتك',step3:'الإضافات',step4:'موعدك',title1:'ما نوع سيارتك؟',title2:'أين تريد لمستنا؟',title3:'أضف لمستك الخاصة.',title4:'لنختَر موعداً.',
@@ -55,6 +57,16 @@
       noPackage:'اختر باقة غسيل',noExtras:'دون إضافات',stepOf:'الخطوة',of:'من',calendarNote:'مواعيد توضيحية · خلال ٣٠ يوماً'
     }
   };
+  Object.assign(catalog.en, {
+    prototype:'Appointments · pay at the wash', confirm:'Book appointment', demo:'Manage your bookings and check-in pass in My appointments. Payment is collected at the wash.',
+    reminderSub:'SMS to your account phone, 1 hour before', reminderDemo:'SMS reminders go to your account phone number about 1 hour before your appointment. For bookings made within an hour, a reminder is queued immediately.',
+    calendarNote:'Book within the next 30 days', policy:'Check-in opens 1 hour before your appointment. Arrivals more than 30 minutes late are marked as missed.'
+  });
+  Object.assign(catalog.ar, {
+    prototype:'المواعيد · الدفع في المركز', confirm:'تأكيد الحجز', demo:'أدر حجوزاتك ورمز الوصول من صفحة مواعيدي. يُستلم الدفع في المركز.',
+    reminderSub:'رسالة لهاتف حسابك قبل الموعد بساعة', reminderDemo:'تُرسل الرسالة لهاتف حسابك قبل الموعد بساعة تقريباً. للحجوزات خلال ساعة، يُضاف التذكير للإرسال فوراً.',
+    calendarNote:'احجز خلال الثلاثين يوماً القادمة', policy:'يُفتح تسجيل الوصول قبل الموعد بساعة. يُسجل الوصول المتأخر بأكثر من نصف ساعة كموعد فائت.'
+  });
   let language = 'en';
   try { language = localStorage.getItem('naqa-language') === 'ar' ? 'ar' : 'en'; } catch { /* Preferences are optional. */ }
   const t = key => catalog[language][key] || catalog.en[key] || key;

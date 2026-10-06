@@ -1,6 +1,16 @@
 {
   "name": "naqa-qurtuba",
   "private": true,
-  "scripts": { "start": "node server.js", "test": "node --test tests/auth.test.js" },
-  "engines": { "node": ">=24" }
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "staff": "node --env-file-if-exists=.env server.js --staff",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "jsqr": "^1.4.0",
+    "qrcode": "^1.5.4"
+  }
 }

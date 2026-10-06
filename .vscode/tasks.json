@@ -6,6 +6,7 @@
 			"type": "shell",
 			"command": "node",
 			"args": [
+				"--env-file-if-exists=.env",
 				"server.js"
 			],
 			"isBackground": true,

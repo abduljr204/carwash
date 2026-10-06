@@ -8,6 +8,14 @@
   try { language = localStorage.getItem('naqa-language') || language; } catch {}
   const t = key => copy[language === 'ar' ? 'ar' : 'en'][key];
   const mode = document.body.dataset.auth;
+  const staffLogin = mode === 'login' && new URLSearchParams(location.search).get('staff') === '1';
+  if (mode && new URLSearchParams(location.search).get('next') === 'booking') {
+    document.querySelectorAll('a[href="login.html"],a[href="signup.html"]').forEach(link => { link.href += '?next=booking'; });
+  }
+  if (staffLogin) {
+    document.querySelector('.auth-tabs').hidden = true;
+    document.querySelector('.auth-switch').hidden = true;
+  }
   let busy = false;
   function render() {
     if (mode) {
@@ -18,6 +26,10 @@
     document.querySelectorAll('[data-account]').forEach(el => { el.textContent = t(el.dataset.account); });
     document.querySelectorAll('[data-auth-language]').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.authLanguage === language)));
     if (busy) document.getElementById('auth-submit').textContent = t('pending');
+    if (staffLogin) {
+      document.getElementById('auth-title').textContent = language === 'ar' ? 'دخول الموظفين' : 'Staff login';
+      document.querySelector('[data-account=loginIntro]').textContent = language === 'ar' ? 'للموظفين المصرح لهم فقط.' : 'For authorized Naqa Qurtuba staff.';
+    }
   }
   document.addEventListener('wash:language', () => { language = document.documentElement.lang; render(); });
   document.querySelectorAll('[data-auth-language]').forEach(button => button.addEventListener('click', () => {
@@ -33,7 +45,7 @@
     catch { throw new Error(t('unavailable')); }
     let data;
     try { data = await response.json(); } catch { throw new Error(t('server')); }
-    if (!response.ok) throw new Error(t(({ 401: 'credentials', 409: 'duplicate', 429: 'limited' })[response.status] || 'failed'));
+    if (!response.ok) throw new Error(response.status === 403 ? (language === 'ar' ? 'هذا الحساب غير مصرح له بدخول الموظفين.' : 'This account does not have staff access.') : t(({ 401: 'credentials', 409: 'duplicate', 429: 'limited' })[response.status] || 'failed'));
     return data;
   }
   const form = document.getElementById('auth-form');
@@ -60,8 +72,8 @@
         document.getElementById('auth-submit').disabled = true;
         form.setAttribute('aria-busy', 'true');
         render();
-        await request(mode, { phone, password: password.value });
-        location.assign('index.html');
+        await request(staffLogin ? 'staff/login' : mode, { phone, password: password.value });
+        location.assign(staffLogin ? 'staff.html' : new URLSearchParams(location.search).get('next') === 'booking' ? 'index.html' : 'dashboard.html');
       } catch (err) { error.textContent = err.message; error.hidden = false; }
       finally { busy = false; document.getElementById('auth-submit').disabled = false; form.removeAttribute('aria-busy'); render(); }
     });
@@ -80,6 +92,9 @@
       try { await request('logout', {}); location.reload(); }
       catch (err) { error.textContent = err.message; logout.disabled = false; }
     });
-    account.append(phone, logout, error); render();
+    const dashboard = document.createElement('a'); dashboard.href = 'dashboard.html'; dashboard.className = 'account-link';
+    const updateLink = () => { dashboard.textContent = document.documentElement.lang === 'ar' ? 'مواعيدي' : 'My appointments'; };
+    updateLink(); document.addEventListener('wash:language', updateLink);
+    account.append(dashboard, phone, logout, error); render();
   }).catch(() => { /* Keep account links available if the server is offline. */ });
 })();
