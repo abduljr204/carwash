@@ -24,6 +24,7 @@
       signupIntro: 'Sign up with your phone number and a password.',
       phone: 'Phone number',
       phoneHint: 'Use your country code, or a Libyan number beginning with 09.',
+      username: 'Username',
       password: 'Password',
       passwordHint: 'Use 8–128 characters.',
       confirm: 'Confirm password',
@@ -96,6 +97,20 @@
   if (staffLogin) {
     document.querySelector('.auth-tabs').hidden = true;
     document.querySelector('.auth-switch').hidden = true;
+    const identity = document.getElementById('phone');
+    identity.id = 'username';
+    identity.name = 'username';
+    identity.type = 'text';
+    identity.autocomplete = 'username';
+    identity.placeholder = 'admin';
+    identity.removeAttribute('maxlength');
+    const label = document.querySelector('label[for="phone"]');
+    label.htmlFor = 'username';
+    label.dataset.account = 'username';
+    const hint = document.getElementById('phone-hint');
+    hint.id = 'username-hint';
+    hint.textContent = 'Use your staff username.';
+    identity.setAttribute('aria-describedby', 'username-hint');
   }
   let busy = false;
   function render() {
@@ -118,6 +133,7 @@
         language === 'ar' ? 'دخول الموظفين' : 'Staff login';
       document.querySelector('[data-account=loginIntro]').textContent =
         language === 'ar' ? 'للموظفين المصرح لهم فقط.' : 'For authorized Naqa Qurtuba staff.';
+      document.getElementById('username-hint').textContent = 'Use your staff username.';
     }
   }
   document.addEventListener('wash:language', () => {
@@ -182,11 +198,11 @@
       const error = document.getElementById('auth-error');
       error.hidden = true;
       const phone = document
-        .getElementById('phone')
+        .getElementById(staffLogin ? 'username' : 'phone')
         .value.replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))
         .replace(/[\s()-]/g, '');
       try {
-        if (!/^(?:\+[1-9]\d{7,14}|00[1-9]\d{7,14}|09\d{8})$/.test(phone))
+        if (!staffLogin && !/^(?:\+[1-9]\d{7,14}|00[1-9]\d{7,14}|09\d{8})$/.test(phone))
           throw new Error(t('invalidPhone'));
         if (
           mode === 'signup' &&
@@ -197,7 +213,12 @@
         document.getElementById('auth-submit').disabled = true;
         form.setAttribute('aria-busy', 'true');
         render();
-        await request(staffLogin ? 'staff/login' : mode, { phone, password: password.value });
+        await request(
+          staffLogin ? 'staff/login' : mode,
+          staffLogin
+            ? { username: phone, password: password.value }
+            : { phone, password: password.value },
+        );
         location.assign(
           staffLogin
             ? 'staff.html'

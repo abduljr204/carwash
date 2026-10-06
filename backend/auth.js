@@ -31,8 +31,7 @@ function grantStaffAccess(db, value) {
 
 function createAuth(db) {
   const attempts = new Map();
-  const roleFor = (phone) =>
-    db.prepare('SELECT phone FROM staff WHERE phone=?').get(phone) ? 'staff' : 'customer';
+  const roleFor = () => 'customer';
 
   function getSession(req) {
     const token =
@@ -44,7 +43,15 @@ function createAuth(db) {
     const user = db
       .prepare('SELECT phone FROM sessions WHERE token = ? AND expires > ?')
       .get(digest(token), Date.now());
-    if (user) user.role = roleFor(user.phone);
+    if (user) {
+      if (user.phone.startsWith('staff:')) {
+        user.username = user.phone.slice('staff:'.length);
+        user.phone = null;
+        user.role = 'staff';
+      } else {
+        user.role = roleFor(user.phone);
+      }
+    }
     return { token, user: user || null };
   }
 
@@ -64,8 +71,39 @@ function createAuth(db) {
       throw httpError(429, 'Too many attempts. Please try again in 15 minutes.');
 
     const body = await readJson(req, 4096);
-    const phone = normalizePhone(body?.phone);
     const password = body?.password;
+    const staffLogin = url.pathname === '/api/staff/login';
+    if (staffLogin) {
+      const username = String(body?.username || '').trim();
+      if (
+        !/^[a-zA-Z0-9_.-]{3,64}$/.test(username) ||
+        typeof password !== 'string' ||
+        password.length < 8 ||
+        password.length > 128
+      ) {
+        throw httpError(400, 'Enter a valid username and a password of 8–128 characters.');
+      }
+      const staff = db.prepare('SELECT * FROM staff_users WHERE username = ?').get(username);
+      const salt = staff?.salt || randomBytes(16).toString('hex');
+      const hash = await derive(password, salt, 64);
+      if (!staff || !timingSafeEqual(hash, Buffer.from(staff.hash, 'hex'))) {
+        throw httpError(401, 'Username or password is incorrect.');
+      }
+      if (token) db.prepare('DELETE FROM sessions WHERE token=?').run(digest(token));
+      db.prepare('DELETE FROM sessions WHERE expires <= ?').run(now);
+      const sessionToken = randomBytes(32).toString('hex');
+      db.prepare('INSERT INTO sessions VALUES (?, ?, ?)').run(
+        digest(sessionToken),
+        `staff:${username}`,
+        now + 86400000,
+      );
+      return reply(
+        200,
+        { user: { username, role: 'staff' } },
+        { 'Set-Cookie': sessionCookie(sessionToken, 86400) },
+      );
+    }
+    const phone = normalizePhone(body?.phone);
     if (!phone || typeof password !== 'string' || password.length < 8 || password.length > 128) {
       throw httpError(400, 'Enter a valid phone number and a password of 8–128 characters.');
     }
@@ -86,9 +124,6 @@ function createAuth(db) {
       throw httpError(401, 'Phone number or password is incorrect.');
     }
     const role = roleFor(phone);
-    if (url.pathname === '/api/staff/login' && role !== 'staff') {
-      throw httpError(403, 'This account does not have staff access.');
-    }
     if (token) db.prepare('DELETE FROM sessions WHERE token=?').run(digest(token));
     db.prepare('DELETE FROM sessions WHERE expires <= ?').run(now);
     const sessionToken = randomBytes(32).toString('hex');

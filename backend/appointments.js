@@ -97,7 +97,7 @@ function createAppointments({ db, normalize, smsConfigured }) {
     )
       return false;
     if (!session) fail(401, 'Please log in to manage appointments.');
-    const isStaff = !!db.prepare('SELECT phone FROM staff WHERE phone = ?').get(session.phone);
+    const isStaff = session.role === 'staff';
     if (p.startsWith('/api/staff/') && !isStaff) fail(403, 'Staff access is required.');
     if (p === '/api/availability' && req.method === 'GET') {
       const date = url.searchParams.get('date');
@@ -295,7 +295,7 @@ function createAppointments({ db, normalize, smsConfigured }) {
         );
       db.prepare(
         "UPDATE appointments SET status='checked_in', checked_in=?, worker=? WHERE id=? AND status='booked'",
-      ).run(Date.now(), session.phone, row.id);
+      ).run(Date.now(), session.username || session.phone, row.id);
       db.prepare(
         "UPDATE reminders SET status='cancelled' WHERE appointment=? AND status IN ('pending','retry')",
       ).run(row.id);
@@ -309,7 +309,7 @@ function createAppointments({ db, normalize, smsConfigured }) {
       if (body.paid !== true) fail(400, 'Confirm payment was collected before issuing a receipt.');
       db.prepare(
         "UPDATE appointments SET status='completed', completed=?, worker=? WHERE id=? AND status='checked_in'",
-      ).run(Date.now(), session.phone, row.id);
+      ).run(Date.now(), session.username || session.phone, row.id);
       reply(200, { appointment: publicBooking(get(row.id)) });
       return true;
     }

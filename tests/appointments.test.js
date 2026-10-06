@@ -63,15 +63,15 @@ test('booking ownership, capacity, QR decoding, rescheduling, check-in, receipts
   assert.equal((await call('appointments')).status, 401);
   assert.equal((await call('staff/bookings', customer)).status, 403);
   assert.equal(
-    (await call('staff/login', null, { phone: '0911111111', password: 'test-password-2026' }))
-      .status,
-    403,
+    (await call('staff/login', null, { username: 'admin', password: 'wrong-password' })).status,
+    401,
   );
   const staffLogin = await call('staff/login', null, {
-    phone: '0933333333',
-    password: 'test-password-2026',
+    username: 'admin',
+    password: 'Admin123',
   });
   assert.equal(staffLogin.status, 200);
+  staff = staffLogin.headers.get('set-cookie').split(';')[0];
   const input = booking();
   assert.equal(
     (await call('appointments', customer, { ...input, vehicle: { type: 'invalid' } })).status,

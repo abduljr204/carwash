@@ -637,7 +637,7 @@
         throw new Error(t('staffOnly'));
       }
       authorized = true;
-      $('signed-in-phone').textContent = user.phone;
+      $('signed-in-phone').textContent = user.username || user.phone;
       await load();
       setInterval(() => {
         if (!document.hidden && !$('booking-dialog').open) load();

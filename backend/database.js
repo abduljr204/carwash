@@ -1,4 +1,5 @@
 const { DatabaseSync } = require('node:sqlite');
+const { scryptSync } = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -18,7 +19,19 @@ function openDatabase() {
       phone TEXT NOT NULL,
       expires INTEGER NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS staff_users (
+      username TEXT PRIMARY KEY,
+      salt TEXT NOT NULL,
+      hash TEXT NOT NULL
+    );
   `);
+  const defaultSalt = 'naqa-default-admin-salt-v1';
+  const defaultHash = scryptSync('Admin123', defaultSalt, 64).toString('hex');
+  db.prepare('INSERT OR IGNORE INTO staff_users (username, salt, hash) VALUES (?, ?, ?)').run(
+    'admin',
+    defaultSalt,
+    defaultHash,
+  );
   return db;
 }
 
