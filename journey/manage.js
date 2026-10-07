@@ -354,4 +354,11 @@
     location.replace('login.html');
   });
   render();
+  const requested = new URLSearchParams(location.search);
+  if (!isAdmin && ['edit', 'cancel'].includes(requested.get('action'))) {
+    const booking = WashDemo.read('bookings', [])
+      .map(parseBooking)
+      .find((b) => b.id === requested.get('booking') && b.username === username && upcoming(b));
+    if (booking) openEditor(booking, requested.get('action') === 'cancel');
+  }
 })();

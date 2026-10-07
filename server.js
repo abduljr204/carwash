@@ -25,7 +25,7 @@ http
       !['GET', 'HEAD'].includes(req.method) ||
       relative.startsWith('..') ||
       path.isAbsolute(relative) ||
-      !/^(?:index\.html|login\.html|signup\.html|dashboard\.html|staff\.html|(?:journey|assets)[\\/].+)$/.test(
+      !/^(?:index\.html|login\.html|signup\.html|dashboard\.html|staff\.html|node_modules[\\/]three[\\/](?:build[\\/]three\.(?:module|core)\.js|examples[\\/]jsm[\\/]controls[\\/]OrbitControls\.js)|(?:journey|assets)[\\/].+)$/.test(
         relative,
       )
     ) {

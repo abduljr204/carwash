@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#111310" />
+    <meta name="theme-color" content="#0E0F11" />
     <meta
       name="description"
       content="An interactive car-care booking experience for Naqa Qurtuba, Tripoli."
@@ -15,6 +15,7 @@
     />
     <link rel="stylesheet" href="journey/styles.css" />
     <link rel="stylesheet" href="journey/account.css" />
+    <link rel="stylesheet" href="journey/home.css" />
     <!-- Dependency-free modules, loaded in dependency order. Works as local files. -->
     <script defer src="journey/demo.js"></script>
     <script defer src="journey/config.js"></script>
@@ -23,8 +24,18 @@
     <script defer src="journey/motion.js"></script>
     <script defer src="journey/app.js"></script>
     <script defer src="journey/account.js"></script>
+    <script defer src="journey/home.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./node_modules/three/build/three.module.js",
+          "three/addons/": "./node_modules/three/examples/jsm/"
+        }
+      }
+    </script>
+    <script defer src="journey/photo-studio.js"></script>
   </head>
-  <body>
+  <body class="home">
     <a class="skip-link" href="#step-title" data-t="skip"> Skip to booking </a>
     <!-- ================================================================
        1. BRAND AND LANGUAGE — persistent on desktop and mobile.
@@ -37,15 +48,15 @@
           <small data-t="brandSub"> CAR CARE / TRIPOLI </small>
         </span>
       </a>
-      <div class="header-caption">
-        <span aria-hidden="true"> ✦ </span>
-        <span data-t="lab"> THE WASH LAB </span>
-      </div>
+      <nav class="home-nav" aria-label="Main navigation">
+        <a href="#services">Services</a><a href="#pricing">Pricing</a>
+        <a href="#booking">Packages</a><a href="#how-it-works">How It Works</a
+        ><a href="#contact">Contact</a>
+      </nav>
       <div class="header-actions">
-        <a class="proof-jump" href="#wash-results" data-account="results">Before &amp; after ↗</a>
+        <span class="payment-status">● Appointments: Pay at wash</span>
         <div class="account-status">
-          <a class="account-link" href="login.html" data-account="login">Log in</a
-          ><a class="account-link" href="login.html">Try demo</a>
+          <a class="account-link" href="login.html">My Bookings ↗</a>
         </div>
         <a class="call-link" href="tel:+218912103120" data-t="help"> Need a hand? </a>
         <div class="language-toggle" role="group" data-label="language" aria-label="Language">
@@ -55,13 +66,107 @@
       </div>
     </header>
     <main id="wash-lab">
+      <section class="home-hero" aria-labelledby="home-title">
+        <div class="hero-copy">
+          <p class="eyebrow">01 / QUICK BOOKING</p>
+          <h1 id="home-title">Your Car.<br />Your <span>Clean.</span></h1>
+          <p class="hero-description">
+            Pick your vehicle, choose your wash, and manage your time in seconds.
+          </p>
+          <a class="primary-button hero-cta" href="#booking"
+            >Book a Car Wash <span aria-hidden="true">↗</span></a
+          >
+          <div class="hero-assurances">
+            <span>↗ On your schedule</span><span>◎ Pay at the wash</span>
+          </div>
+        </div>
+        <div
+          class="hero-canvas photo-studio mist-active"
+          aria-label="Photorealistic car wash studio preview"
+        >
+          <div class="canvas-caption">
+            <span>● LIVE CONFIGURATION</span><span>STUDIO / 001</span>
+          </div>
+          <img
+            class="studio-photo"
+            src="assets/red-aston-studio.png"
+            width="1402"
+            height="1122"
+            alt="Metallic red Aston Martin under water spray on a glowing lime platform, reflected in the wet studio floor"
+            fetchpriority="high"
+          />
+          <div class="photo-mist" aria-hidden="true"></div>
+          <div class="photo-light" aria-hidden="true"></div>
+          <div class="studio-controls" aria-label="Studio controls">
+            <button
+              id="studio-rotate"
+              type="button"
+              aria-pressed="false"
+              disabled
+              title="360° rotation is unavailable for this photographic preview"
+            >
+              Auto rotate
+            </button>
+            <button
+              id="studio-lights"
+              type="button"
+              aria-pressed="false"
+              aria-label="Headlights: toggle additional glow"
+            >
+              Headlights
+            </button>
+            <button
+              id="studio-mist"
+              type="button"
+              aria-pressed="true"
+              aria-label="Water mist: toggle animated overlay"
+            >
+              Water mist
+            </button>
+          </div>
+          <p id="studio-status" class="studio-status" role="status">
+            STUDIO / PHOTOGRAPHIC PREVIEW
+          </p>
+          <span class="canvas-cross cross-one" aria-hidden="true">+</span
+          ><span class="canvas-cross cross-two" aria-hidden="true">+</span>
+          <div class="canvas-bottom">
+            <span>PRECISION CARE.<br /><strong>EVERY ANGLE.</strong></span
+            ><span class="canvas-spec">TOP VIEW<br />32.88° N / TRIPOLI</span>
+          </div>
+        </div>
+      </section>
+      <section class="quote-switcher" aria-label="Quick wash quote">
+        <div>
+          <p class="eyebrow">YOUR CLEAN, YOUR WAY</p>
+          <p id="hero-quote-copy" aria-live="polite">A fresh finish for your everyday drive.</p>
+        </div>
+        <div class="quote-options" role="group" aria-label="Wash coverage">
+          <button type="button" data-quote="exterior" aria-pressed="true">Exterior</button
+          ><button type="button" data-quote="full" aria-pressed="false">Full wash</button
+          ><button type="button" data-quote="interior" aria-pressed="false">Interior</button>
+        </div>
+        <div class="hero-quote-price">
+          <strong id="hero-quote-price" aria-live="polite">$15 USD</strong
+          ><span>Car / sample estimate</span>
+        </div>
+      </section>
+      <section
+        id="active-appointment"
+        class="active-appointment"
+        aria-label="Your next appointment"
+        aria-live="polite"
+        hidden
+      ></section>
+      <div class="booking-section-label" id="booking">
+        <span>THE WASH CONFIGURATOR</span><span>FOUR STEPS. ONE FRESH START.</span>
+      </div>
       <!-- ================================================================
          2. JOURNEY PROGRESS — completed steps remain editable.
          ================================================================ -->
       <section class="journey-heading" aria-labelledby="journey-title">
         <div>
           <p class="eyebrow" data-t="introLabel">A LITTLE PLAY. A LOT OF SHINE.</p>
-          <h1 id="journey-title" data-t="intro">Your car. Your clean.</h1>
+          <h2 id="journey-title">Make it your wash.</h2>
         </div>
         <p class="prototype-label">
           <span aria-hidden="true"> ◈ </span>
@@ -446,42 +551,76 @@
       <p class="demo-disclaimer" data-t="demo">
         Manage your bookings and check-in pass in My appointments. Payment is collected at the wash.
       </p>
-      <section class="comparison" id="wash-results" aria-labelledby="results-title">
-        <p class="eyebrow" data-account="eyebrow">A LITTLE DIRT. A BIG DIFFERENCE.</p>
-        <h2 id="results-title" data-account="heading">See the shine.</h2>
-        <p data-account="description">
-          From everyday dust to a fresh finish. See the difference a little care can make.
-        </p>
-        <div class="photo-pair">
-          <figure>
-            <div class="photo-crop">
-              <img
-                src="assets/wash-pair.png"
-                alt="Black sedan before washing, covered in dirt"
-                width="1774"
-                height="887"
-                loading="lazy"
-              />
-            </div>
-            <figcaption data-account="before">BEFORE</figcaption>
-          </figure>
-          <figure>
-            <div class="photo-crop after">
-              <img
-                src="assets/wash-pair.png"
-                alt="The same black sedan after washing, clean and polished"
-                width="1774"
-                height="887"
-                loading="lazy"
-              />
-            </div>
-            <figcaption data-account="after">AFTER</figcaption>
-          </figure>
+      <section class="home-services" id="services" aria-labelledby="services-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">02 / A CLEAN FOR EVERY CAR</p>
+            <h2 id="services-title">Less dirt. More detail.</h2>
+          </div>
+          <p>Choose your coverage.<br />We'll take care of the rest.</p>
         </div>
-        <p class="quiet-note" data-account="note">Illustrative before-and-after imagery.</p>
+        <div class="service-grid" id="pricing">
+          <a class="service-card" href="#booking"
+            ><span class="service-number">01 / EXTERIOR</span>
+            <h3>A fresh first impression.</h3>
+            <p>Exterior wash for a clean finish from every angle.</p>
+            <div><strong data-home-price="exterior"></strong><span>Configure ↗</span></div></a
+          >
+          <a class="service-card featured" href="#booking"
+            ><span class="service-number">02 / FULL WASH <b>INSIDE + OUT</b></span>
+            <h3>The complete reset.</h3>
+            <p>Interior and exterior coverage in one complete wash.</p>
+            <div><strong data-home-price="full"></strong><span>Configure ↗</span></div></a
+          >
+          <a class="service-card" href="#booking"
+            ><span class="service-number">03 / INTERIOR</span>
+            <h3>Good on the inside.</h3>
+            <p>Give your cabin the attention it deserves.</p>
+            <div><strong data-home-price="interior"></strong><span>Configure ↗</span></div></a
+          >
+        </div>
+        <p class="quiet-note">
+          Sample USD estimates for a car. Vehicle type and extras change your total.
+        </p>
+      </section>
+      <section class="how-section" id="how-it-works" aria-labelledby="how-title">
+        <div>
+          <p class="eyebrow">03 / KEEP IT SIMPLE</p>
+          <h2 id="how-title">Your next clean,<br />without the wait.</h2>
+        </div>
+        <ol>
+          <li>
+            <span>01</span>
+            <div>
+              <h3>Build your wash</h3>
+              <p>Choose your ride, coverage, and finishing touches.</p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <h3>Pick your moment</h3>
+              <p>Choose a date and time that work for you.</p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <h3>Show up. Shine on.</h3>
+              <p>Pay at the wash. Manage your appointment in My Bookings.</p>
+            </div>
+          </li>
+        </ol>
       </section>
     </main>
     <footer class="staff-footer">
+      <div id="contact" class="home-contact">
+        <div>
+          <strong>NAQA QURTUBA<span> / CAR CARE</span></strong>
+          <p>Fresh starts here. Tripoli, Libya.</p>
+        </div>
+        <a href="tel:+218912103120">Need a hand? +218 91 210 3120 ↗</a>
+      </div>
       <a href="login.html?staff=1" data-t="staffLogin">Staff login</a>
     </footer>
     <noscript>

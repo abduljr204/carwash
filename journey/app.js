@@ -582,6 +582,9 @@
     /* An unavailable or invalid draft does not prevent booking. */
   }
   bindEvents();
+  document.addEventListener('wash:quote', (event) => {
+    selectPackage(event.detail);
+  });
   renderAll();
   let smsReady = false;
   const renderSms = () => {
