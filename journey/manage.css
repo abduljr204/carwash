@@ -335,6 +335,11 @@
   border-color: #426b50;
   color: #aff0c5;
 }
+.appointment-badge.canceled {
+  background: #442727;
+  border-color: #b56868;
+  color: #ffc4c4;
+}
 .appointment-details {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
