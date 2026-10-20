@@ -282,43 +282,421 @@
     policy:
       'يُفتح تسجيل الوصول قبل الموعد بساعة. يُسجل الوصول المتأخر بأكثر من نصف ساعة كموعد فائت.',
   });
+  // Shared header, home page sections, account pages and dashboards.
+  // Values used with data-html are trusted static markup from this file only.
+  Object.assign(catalog.en, {
+    english: 'English',
+    arabic: 'العربية',
+    mainNav: 'Main navigation',
+    navServices: 'Services',
+    navPricing: 'Pricing',
+    navPackages: 'Packages',
+    navHow: 'How It Works',
+    navContact: 'Contact',
+    paymentStatus: '● Appointments: Pay at wash',
+    myBookings: 'My Bookings ↗',
+    myDashboard: 'My dashboard',
+    adminDashboard: 'Admin dashboard',
+    userDashboard: 'User dashboard',
+    logout: 'Log out',
+    heroEyebrow: '01 / QUICK BOOKING',
+    heroTitle: 'Your Car.<br />Your <span>Clean.</span>',
+    heroDesc: 'Pick your vehicle, choose your wash, and manage your time in seconds.',
+    heroCta: 'Book a Car Wash <span aria-hidden="true">↗</span>',
+    heroSchedule: '↗ On your schedule',
+    heroPay: '◎ Pay at the wash',
+    heroCanvas: 'Photorealistic car wash studio preview',
+    heroAlt:
+      'Metallic red Aston Martin under water spray on a glowing lime platform, reflected in the wet studio floor',
+    studioLive: '● LIVE CONFIGURATION',
+    studioId: 'STUDIO / 001',
+    studioControls: 'Studio controls',
+    autoRotate: 'Auto rotate',
+    rotateUnavailable: '360° rotation is unavailable for this photographic preview',
+    headlights: 'Headlights',
+    headlightsLabel: 'Headlights: toggle additional glow',
+    waterMist: 'Water mist',
+    mistLabel: 'Water mist: toggle animated overlay',
+    studioStatus: 'STUDIO / PHOTOGRAPHIC PREVIEW',
+    studioTagline: 'PRECISION CARE.<br /><strong>EVERY ANGLE.</strong>',
+    studioSpec: 'TOP VIEW<br />32.88° N / TRIPOLI',
+    quickQuote: 'Quick wash quote',
+    quoteEyebrow: 'YOUR CLEAN, YOUR WAY',
+    washCoverage: 'Wash coverage',
+    quoteExterior: 'Exterior',
+    quoteFull: 'Full wash',
+    quoteInterior: 'Interior',
+    quoteCopyExterior: 'A fresh finish for your everyday drive.',
+    quoteCopyFull: 'The complete reset. A little care, inside and out.',
+    quoteCopyInterior: 'A cleaner cabin. A better place to be.',
+    quoteNote: 'Car / sample estimate',
+    priceUsd: '${price} USD',
+    money: '${price}',
+    fromPrice: 'From {price}',
+    nextAppointment: 'Your next appointment',
+    nextWashLabel: '● CONFIRMED / YOUR NEXT WASH',
+    nextWashWhen: '{date} · {time} (Tripoli) · {estimate}',
+    estimated: '{price} estimated',
+    estimateAtWash: 'Estimate at wash',
+    editReschedule: 'Edit / Reschedule',
+    cancelWash: 'Cancel Wash',
+    configuratorLabel: 'THE WASH CONFIGURATOR',
+    configuratorSub: 'FOUR STEPS. ONE FRESH START.',
+    journeyTitle: 'Make it your wash.',
+    servicesEyebrow: '02 / A CLEAN FOR EVERY CAR',
+    servicesTitle: 'Less dirt. More detail.',
+    servicesIntro: 'Choose your coverage.<br />We’ll take care of the rest.',
+    service1Number: '01 / EXTERIOR',
+    service1Title: 'A fresh first impression.',
+    service1Desc: 'Exterior wash for a clean finish from every angle.',
+    service2Number: '02 / FULL WASH <b>INSIDE + OUT</b>',
+    service2Title: 'The complete reset.',
+    service2Desc: 'Interior and exterior coverage in one complete wash.',
+    service3Number: '03 / INTERIOR',
+    service3Title: 'Good on the inside.',
+    service3Desc: 'Give your cabin the attention it deserves.',
+    configure: 'Configure ↗',
+    servicesNote: 'Sample USD estimates for a car. Vehicle type and extras change your total.',
+    howEyebrow: '03 / KEEP IT SIMPLE',
+    howTitle: 'Your next clean,<br />without the wait.',
+    how1Title: 'Build your wash',
+    how1Desc: 'Choose your ride, coverage, and finishing touches.',
+    how2Title: 'Pick your moment',
+    how2Desc: 'Choose a date and time that work for you.',
+    how3Title: 'Show up. Shine on.',
+    how3Desc: 'Pay at the wash. Manage your appointment in My Bookings.',
+    footerBrand: 'NAQA QURTUBA<span> / CAR CARE</span>',
+    footerTagline: 'Fresh starts here. Tripoli, Libya.',
+    footerCall: 'Need a hand? <bdi dir="ltr">+218 91 210 3120</bdi> ↗',
+    loginPageTitle: 'Welcome back | Naqa Qurtuba',
+    backToWash: 'Back to the wash',
+    authCare: 'A FRESH START.',
+    authYourCar: 'Your car.',
+    authYourClean: 'Your clean.',
+    authStory: 'A little care goes a long way. Your next fresh start begins here.',
+    beforeAlt: 'Black sedan before washing, covered in dirt',
+    afterAlt: 'The same black sedan after washing, clean and polished',
+    before: 'BEFORE',
+    after: 'AFTER',
+    browserDemo: 'BROWSER DEMO',
+    loginTitle: 'Welcome back',
+    loginIntro: 'Log in with a test username and password.',
+    username: 'Username',
+    usernamePlaceholder: 'admin or user',
+    usernameHint:
+      'Test accounts: <bdi dir="ltr">admin / admin123</bdi> or <bdi dir="ltr">user / user123</bdi>.',
+    password: 'Password',
+    passwordHint: 'Enter the test account password.',
+    show: 'Show',
+    hide: 'Hide',
+    login: 'Log in',
+    authSwitch: 'Demo accounts only. No registration required.',
+    loginFailed: 'Incorrect username or password.',
+    dashboardPageTitle: 'My appointments | Naqa Qurtuba',
+    staffPageTitle: 'Staff dashboard | Naqa Qurtuba',
+    staffArea: 'STAFF / CHECK-IN',
+    yourCare: 'YOUR CAR CARE, IN ONE PLACE',
+    manageIntro: 'Your next wash, your check-in pass, and every fresh start before it.',
+    newBooking: 'Book a wash',
+    appointments: 'Appointments',
+    refresh: 'Refresh',
+    loading: 'Loading appointments…',
+    closeDialog: 'Close',
+    demoBookings: 'Demo bookings',
+    signedInAs: 'Signed in as {user}. Booking changes sync automatically across browser tabs.',
+    searchUsername: 'Find a customer by username',
+    search: 'Search',
+    showAll: 'Show all',
+    tabCount: '{label} ({count})',
+    tabActive: 'Active bookings',
+    tabHistory: 'History',
+    noHistory: 'No appointment history yet.',
+    noActive: 'No active bookings.',
+    serviceFull: 'Full detail wash',
+    serviceExterior: 'Exterior wash',
+    serviceInterior: 'Interior wash',
+    fallbackWash: 'Wash',
+    appointmentLabel: 'CAR CARE APPOINTMENT',
+    statusCanceled: 'Canceled',
+    statusCompleted: 'Completed',
+    statusUpcoming: 'Upcoming',
+    detailDate: '📅 Date',
+    detailTime: '🕒 Time',
+    vehicleType: 'Vehicle type',
+    makeModel: 'Make / model',
+    licensePlate: 'License plate',
+    notSpecified: 'Not specified',
+    extrasList: 'Extras: {list}',
+    adminManagement: 'Admin Management',
+    adminSummary: '{wash} package for a {vehicle}{extras}.',
+    adminSummaryExtras: ' with {list}',
+    dismiss: 'Dismiss from queue',
+    dismissedMessage: 'Canceled appointment dismissed from the active queue.',
+    markCompleted: 'Mark as Completed',
+    completedMessage: 'Appointment completed and moved to History.',
+    cancelAppointment: 'Cancel appointment',
+    cancelTitle: 'Cancel appointment?',
+    editTitle: 'Edit appointment',
+    cancelPrompt:
+      'Cancel your appointment on {date} at {time}? The admin will be notified automatically.',
+    fieldDate: 'Date (Tripoli time)',
+    fieldTime: 'Time (Tripoli time)',
+    fieldModel: 'Vehicle make / model (optional)',
+    fieldPlate: 'License plate (optional)',
+    fieldService: 'Wash service',
+    confirmCancel: 'Confirm cancellation',
+    saveChanges: 'Save changes',
+    errorFuture: 'Choose a future appointment within the next 30 days.',
+    errorChanged: 'This appointment has changed. Refresh and try again.',
+    canceledMessage: 'Appointment canceled.',
+    updatedMessage: 'Appointment updated.',
+  });
+  Object.assign(catalog.ar, {
+    english: 'English',
+    arabic: 'العربية',
+    mainNav: 'القائمة الرئيسية',
+    navServices: 'الخدمات',
+    navPricing: 'الأسعار',
+    navPackages: 'الباقات',
+    navHow: 'كيف نعمل',
+    navContact: 'تواصل معنا',
+    paymentStatus: '● المواعيد: الدفع في المركز',
+    myBookings: 'حجوزاتي ↗',
+    myDashboard: 'لوحتي',
+    adminDashboard: 'لوحة الإدارة',
+    userDashboard: 'لوحة المستخدم',
+    logout: 'تسجيل الخروج',
+    heroEyebrow: '٠١ / حجز سريع',
+    heroTitle: 'سيارتك.<br />على <span>ذوقك.</span>',
+    heroDesc: 'اختر سيارتك وغسلتك، ونظّم وقتك في ثوانٍ.',
+    heroCta: 'احجز غسيل سيارتك <span aria-hidden="true">↗</span>',
+    heroSchedule: '↗ في الوقت الذي يناسبك',
+    heroPay: '◎ الدفع في المركز',
+    heroCanvas: 'معاينة واقعية لاستوديو غسيل السيارات',
+    heroAlt:
+      'سيارة أستون مارتن حمراء معدنية تحت رذاذ الماء على منصة خضراء مضيئة، تنعكس على أرضية الاستوديو المبللة',
+    studioLive: '● تخصيص مباشر',
+    studioId: 'الاستوديو / ٠٠١',
+    studioControls: 'أدوات التحكم بالاستوديو',
+    autoRotate: 'دوران تلقائي',
+    rotateUnavailable: 'الدوران ٣٦٠° غير متاح في هذه المعاينة المصوّرة',
+    headlights: 'المصابيح',
+    headlightsLabel: 'المصابيح الأمامية: تبديل الإضاءة الإضافية',
+    waterMist: 'رذاذ الماء',
+    mistLabel: 'رذاذ الماء: تبديل التأثير المتحرك',
+    studioStatus: 'الاستوديو / معاينة مصوّرة',
+    studioTagline: 'عناية دقيقة.<br /><strong>من كل زاوية.</strong>',
+    studioSpec: 'من الأعلى<br />32.88° شمالاً / طرابلس',
+    quickQuote: 'تسعيرة سريعة للغسيل',
+    quoteEyebrow: 'نظافتك على طريقتك',
+    washCoverage: 'نطاق الغسيل',
+    quoteExterior: 'خارجي',
+    quoteFull: 'غسيل كامل',
+    quoteInterior: 'داخلي',
+    quoteCopyExterior: 'لمسة منعشة لمشاويرك اليومية.',
+    quoteCopyFull: 'بداية جديدة كاملة. عناية من الداخل والخارج.',
+    quoteCopyInterior: 'مقصورة أنظف. ومكان أجمل لقضاء وقتك.',
+    quoteNote: 'سيارة / سعر تقديري',
+    priceUsd: '{price} دولار',
+    money: '{price} $',
+    fromPrice: 'ابتداءً من {price}',
+    nextAppointment: 'موعدك القادم',
+    nextWashLabel: '● مؤكد / غسلتك القادمة',
+    nextWashWhen: '{date} · {time} (بتوقيت طرابلس) · {estimate}',
+    estimated: '{price} تقديرياً',
+    estimateAtWash: 'يُحدد السعر في المركز',
+    editReschedule: 'تعديل / تغيير الموعد',
+    cancelWash: 'إلغاء الغسيل',
+    configuratorLabel: 'مُخصِّص الغسيل',
+    configuratorSub: 'أربع خطوات. بداية جديدة واحدة.',
+    journeyTitle: 'صمّم غسلتك بنفسك.',
+    servicesEyebrow: '٠٢ / عناية لكل سيارة',
+    servicesTitle: 'غبار أقل. تفاصيل أكثر.',
+    servicesIntro: 'اختر نطاق الغسيل.<br />ونحن نتكفّل بالباقي.',
+    service1Number: '٠١ / خارجي',
+    service1Title: 'انطباع أول منعش.',
+    service1Desc: 'غسيل خارجي للمعان من كل زاوية.',
+    service2Number: '٠٢ / غسيل كامل <b>داخلي + خارجي</b>',
+    service2Title: 'بداية جديدة كاملة.',
+    service2Desc: 'عناية بالداخل والخارج في غسلة واحدة متكاملة.',
+    service3Number: '٠٣ / داخلي',
+    service3Title: 'جمال من الداخل.',
+    service3Desc: 'امنح مقصورتك الاهتمام الذي تستحقه.',
+    configure: 'خصّص ↗',
+    servicesNote: 'أسعار تقديرية بالدولار لسيارة عادية. يتغيّر الإجمالي حسب نوع السيارة والإضافات.',
+    howEyebrow: '٠٣ / ببساطة',
+    howTitle: 'غسلتك القادمة،<br />دون انتظار.',
+    how1Title: 'صمّم غسلتك',
+    how1Desc: 'اختر سيارتك ونطاق الغسيل واللمسات الأخيرة.',
+    how2Title: 'اختر موعدك',
+    how2Desc: 'اختر التاريخ والوقت المناسبين لك.',
+    how3Title: 'احضر. وانطلق بلمعان.',
+    how3Desc: 'ادفع في المركز، وأدر موعدك من صفحة حجوزاتي.',
+    footerBrand: 'نقاء قرطبة<span> / العناية بالسيارات</span>',
+    footerTagline: 'البداية الجديدة تبدأ هنا. طرابلس، ليبيا.',
+    footerCall: 'تحتاج مساعدة؟ <bdi dir="ltr">+218 91 210 3120</bdi> ↗',
+    loginPageTitle: 'مرحباً بعودتك | نقاء قرطبة',
+    backToWash: 'العودة إلى الغسيل',
+    authCare: 'بداية جديدة.',
+    authYourCar: 'سيارتك.',
+    authYourClean: 'نظافتك.',
+    authStory: 'القليل من العناية يصنع فرقاً كبيراً. بدايتك الجديدة تبدأ هنا.',
+    beforeAlt: 'سيارة سيدان سوداء قبل الغسيل، مغطاة بالأوساخ',
+    afterAlt: 'السيارة السيدان السوداء نفسها بعد الغسيل، نظيفة ولامعة',
+    before: 'قبل الغسيل',
+    after: 'بعد الغسيل',
+    browserDemo: 'نسخة تجريبية',
+    loginTitle: 'مرحباً بعودتك',
+    loginIntro: 'سجّل الدخول باسم مستخدم وكلمة مرور تجريبيين.',
+    username: 'اسم المستخدم',
+    usernamePlaceholder: 'admin / user',
+    usernameHint:
+      'الحسابات التجريبية: <bdi dir="ltr">admin / admin123</bdi> أو <bdi dir="ltr">user / user123</bdi>.',
+    password: 'كلمة المرور',
+    passwordHint: 'أدخل كلمة مرور الحساب التجريبي.',
+    show: 'إظهار',
+    hide: 'إخفاء',
+    login: 'تسجيل الدخول',
+    authSwitch: 'حسابات تجريبية فقط. لا حاجة للتسجيل.',
+    loginFailed: 'اسم المستخدم أو كلمة المرور غير صحيحة.',
+    dashboardPageTitle: 'مواعيدي | نقاء قرطبة',
+    staffPageTitle: 'لوحة الموظفين | نقاء قرطبة',
+    staffArea: 'الموظفون / تسجيل الوصول',
+    yourCare: 'كل ما يخص العناية بسيارتك في مكان واحد',
+    manageIntro: 'غسلتك القادمة، ورمز وصولك، وكل بداية جديدة سبقتها.',
+    newBooking: 'احجز غسيلاً',
+    appointments: 'المواعيد',
+    refresh: 'تحديث',
+    loading: 'جارٍ تحميل المواعيد…',
+    closeDialog: 'إغلاق',
+    demoBookings: 'حجوزات تجريبية',
+    signedInAs: 'تم تسجيل الدخول باسم {user}. تتزامن تغييرات الحجز تلقائياً بين علامات التبويب.',
+    searchUsername: 'ابحث عن عميل باسم المستخدم',
+    search: 'بحث',
+    showAll: 'عرض الكل',
+    tabCount: '{label} ({count})',
+    tabActive: 'الحجوزات النشطة',
+    tabHistory: 'السجل',
+    noHistory: 'لا يوجد سجل مواعيد بعد.',
+    noActive: 'لا توجد حجوزات نشطة.',
+    serviceFull: 'غسيل كامل مفصّل',
+    serviceExterior: 'غسيل خارجي',
+    serviceInterior: 'غسيل داخلي',
+    fallbackWash: 'غسيل',
+    appointmentLabel: 'موعد العناية بالسيارة',
+    statusCanceled: 'ملغى',
+    statusCompleted: 'مكتمل',
+    statusUpcoming: 'قادم',
+    detailDate: '📅 التاريخ',
+    detailTime: '🕒 الوقت',
+    vehicleType: 'نوع السيارة',
+    makeModel: 'الشركة / الطراز',
+    licensePlate: 'رقم اللوحة',
+    notSpecified: 'غير محدد',
+    extrasList: 'الإضافات: {list}',
+    adminManagement: 'إدارة الموعد',
+    adminSummary: 'باقة {wash} لسيارة من نوع {vehicle}{extras}.',
+    adminSummaryExtras: ' مع {list}',
+    dismiss: 'إزالة من القائمة',
+    dismissedMessage: 'أُزيل الموعد الملغى من القائمة النشطة.',
+    markCompleted: 'تحديد كمكتمل',
+    completedMessage: 'اكتمل الموعد ونُقل إلى السجل.',
+    cancelAppointment: 'إلغاء الموعد',
+    cancelTitle: 'إلغاء الموعد؟',
+    editTitle: 'تعديل الموعد',
+    cancelPrompt: 'هل تريد إلغاء موعدك يوم {date} الساعة {time}؟ سيتم إشعار الإدارة تلقائياً.',
+    fieldDate: 'التاريخ (بتوقيت طرابلس)',
+    fieldTime: 'الوقت (بتوقيت طرابلس)',
+    fieldModel: 'شركة / طراز السيارة (اختياري)',
+    fieldPlate: 'رقم اللوحة (اختياري)',
+    fieldService: 'خدمة الغسيل',
+    confirmCancel: 'تأكيد الإلغاء',
+    saveChanges: 'حفظ التغييرات',
+    errorFuture: 'اختر موعداً مستقبلياً خلال الثلاثين يوماً القادمة.',
+    errorChanged: 'تغيّر هذا الموعد. حدّث الصفحة وحاول مجدداً.',
+    canceledMessage: 'تم إلغاء الموعد.',
+    updatedMessage: 'تم تحديث الموعد.',
+  });
   let language = 'en';
   try {
     language = localStorage.getItem('naqa-language') === 'ar' ? 'ar' : 'en';
   } catch {
     /* Preferences are optional. */
   }
-  const t = (key) => catalog[language][key] || catalog.en[key] || key;
+  // Fill {name} placeholders, e.g. t('fromPrice', { price: '$15' }).
+  const t = (key, values) => {
+    const text = catalog[language][key] ?? catalog.en[key] ?? key;
+    return values ? text.replace(/\{(\w+)\}/g, (match, name) => values[name] ?? match) : text;
+  };
   const locale = () => (language === 'ar' ? 'ar-LY' : 'en-US');
+  // Date keys are YYYY-MM-DD and times HH:MM, both already in Tripoli time.
+  const formatDate = (dateKey, options = { day: 'numeric', month: 'short', year: 'numeric' }) =>
+    Number.isFinite(Date.parse(`${dateKey}T12:00:00Z`))
+      ? new Intl.DateTimeFormat(locale(), { timeZone: 'UTC', ...options }).format(
+          new Date(`${dateKey}T12:00:00Z`),
+        )
+      : dateKey;
+  const formatTime = (time) =>
+    /^\d\d:\d\d$/.test(time || '')
+      ? new Intl.DateTimeFormat(locale(), {
+          hour: '2-digit',
+          minute: '2-digit',
+          hourCycle: 'h23',
+          timeZone: 'UTC',
+        }).format(new Date(`2000-01-01T${time}:00Z`))
+      : time;
+  const formatList = (items) =>
+    new Intl.ListFormat(locale(), { type: 'conjunction' }).format(items);
+  // Attribute hooks: data-t (text), data-html (trusted catalog markup),
+  // data-label (aria-label), data-placeholder, data-tip (title), data-alt.
+  const attributes = { label: 'aria-label', placeholder: 'placeholder', tip: 'title', alt: 'alt' };
   function translateDocument() {
     document.documentElement.lang = language;
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
-    document.title = t('pageTitle');
     document.querySelectorAll('[data-t]').forEach((element) => {
       element.textContent = t(element.dataset.t);
     });
-    document.querySelectorAll('[data-label]').forEach((element) => {
-      element.setAttribute('aria-label', t(element.dataset.label));
+    document.querySelectorAll('[data-html]').forEach((element) => {
+      element.innerHTML = t(element.dataset.html);
     });
+    for (const [key, attribute] of Object.entries(attributes))
+      document.querySelectorAll(`[data-${key}]`).forEach((element) => {
+        element.setAttribute(attribute, t(element.dataset[key]));
+      });
     document
       .querySelectorAll('[data-language]')
       .forEach((button) =>
         button.setAttribute('aria-pressed', String(button.dataset.language === language)),
       );
   }
-  function setLanguage(value) {
+  function applyLanguage(value) {
     language = value === 'ar' ? 'ar' : 'en';
     translateDocument();
+    document.dispatchEvent(new CustomEvent('wash:language'));
+  }
+  function setLanguage(value) {
+    applyLanguage(value);
     try {
       localStorage.setItem('naqa-language', language);
     } catch {
       /* No storage requirement. */
     }
-    document.dispatchEvent(new CustomEvent('wash:language'));
   }
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-language]');
+    if (button && button.dataset.language !== language) setLanguage(button.dataset.language);
+  });
+  // Keep other open tabs in the same language.
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'naqa-language' && event.newValue && event.newValue !== language)
+      applyLanguage(event.newValue);
+  });
   window.WashI18n = Object.freeze({
     t,
     locale,
+    formatDate,
+    formatTime,
+    formatList,
     setLanguage,
     translateDocument,
     get language() {

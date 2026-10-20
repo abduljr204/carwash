@@ -23,33 +23,38 @@
     element.removeAttribute('data-part');
   });
   document.getElementById('hero-car')?.append(preview);
-  const money = (value) => '$' + value + ' USD';
+  const { t } = WashI18n;
+  const money = (value) => t('priceUsd', { price: value });
   const quoteCopy = {
-    exterior: 'A fresh finish for your everyday drive.',
-    full: 'The complete reset. A little care, inside and out.',
-    interior: 'A cleaner cabin. A better place to be.',
+    exterior: 'quoteCopyExterior',
+    full: 'quoteCopyFull',
+    interior: 'quoteCopyInterior',
   };
+  let quote = 'exterior';
+  function renderQuote() {
+    document.getElementById('hero-quote-copy').textContent = t(quoteCopy[quote]);
+    document.getElementById('hero-quote-price').textContent = money(
+      WashConfig.vehicles[0].basePrice + WashConfig.packageSurcharges[quote],
+    );
+    document.querySelectorAll('[data-home-price]').forEach((element) => {
+      element.textContent = t('fromPrice', {
+        price: money(
+          WashConfig.vehicles[0].basePrice +
+            WashConfig.packageSurcharges[element.dataset.homePrice],
+        ),
+      });
+    });
+  }
   document.querySelectorAll('[data-quote]').forEach((button) => {
     button.addEventListener('click', () => {
       document
         .querySelectorAll('[data-quote]')
         .forEach((option) => option.setAttribute('aria-pressed', String(option === button)));
-      document.getElementById('hero-quote-copy').textContent = quoteCopy[button.dataset.quote];
-      document.getElementById('hero-quote-price').textContent = money(
-        WashConfig.vehicles[0].basePrice + WashConfig.packageSurcharges[button.dataset.quote],
-      );
+      quote = button.dataset.quote;
+      renderQuote();
       document.dispatchEvent(new CustomEvent('wash:quote', { detail: button.dataset.quote }));
     });
   });
-  document.querySelectorAll('[data-home-price]').forEach((element) => {
-    element.textContent =
-      'From ' +
-      money(
-        WashConfig.vehicles[0].basePrice + WashConfig.packageSurcharges[element.dataset.homePrice],
-      );
-  });
-  const link = document.querySelector('.account-status .account-link');
-  if (link && WashDemo.read('account', null) !== 'admin') link.textContent = 'My Bookings ↗';
   function node(tag, text, className = '') {
     const element = document.createElement(tag);
     element.textContent = text;
@@ -89,24 +94,28 @@
             WashConfig,
           )
         : null;
-    const vehicleName = booking.vehicle?.type || 'Vehicle';
+    const vehicleName = vehicle ? t(vehicle.id) : booking.vehicle?.type || t('vehicle');
     detail.append(
-      node('p', '● CONFIRMED / YOUR NEXT WASH', 'eyebrow'),
+      node('p', t('nextWashLabel'), 'eyebrow'),
       node(
         'h2',
         vehicleName.toUpperCase() + (booking.vehicle?.model ? ' · ' + booking.vehicle.model : ''),
       ),
       node(
         'p',
-        `${booking.date} · ${booking.time} (Tripoli) · ${quote ? money(quote.total) + ' estimated' : 'Estimate at wash'}`,
+        t('nextWashWhen', {
+          date: WashI18n.formatDate(booking.date),
+          time: WashI18n.formatTime(booking.time),
+          estimate: quote ? t('estimated', { price: money(quote.total) }) : t('estimateAtWash'),
+        }),
       ),
     );
     const actions = node('div', '', 'appointment-home-actions');
     for (const [action, text] of [
-      ['edit', 'Edit / Reschedule'],
-      ['cancel', 'Cancel Wash'],
+      ['edit', 'editReschedule'],
+      ['cancel', 'cancelWash'],
     ]) {
-      const link = node('a', text);
+      const link = node('a', t(text));
       link.href = 'dashboard.html?booking=' + encodeURIComponent(booking.id) + '&action=' + action;
       actions.append(link);
     }
@@ -114,5 +123,10 @@
   }
   window.addEventListener('wash:bookings', renderAppointment);
   window.addEventListener('focus', renderAppointment);
+  document.addEventListener('wash:language', () => {
+    renderQuote();
+    renderAppointment();
+  });
+  renderQuote();
   renderAppointment();
 })();

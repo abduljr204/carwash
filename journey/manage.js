@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
+  const { t, formatDate, formatTime, formatList } = WashI18n;
   const staff = document.body.dataset.dashboard === 'staff';
   const isAdmin = staff;
   const hashUser = location.hash.slice(1);
@@ -15,14 +16,12 @@
     return;
   }
   $('signed-in-phone').textContent = username;
-  document.querySelector('h1').textContent = staff ? 'Admin dashboard' : 'User dashboard';
-  $('page-status').textContent =
-    'Signed in as ' + username + '. Booking changes sync automatically across browser tabs.';
-  $('language').hidden = true;
+  document.querySelector('h1').dataset.t = staff ? 'adminDashboard' : 'userDashboard';
   if ($('scan')) $('scan').hidden = true;
-  if ($('today-date')) $('today-date').textContent = 'Demo bookings';
+  if ($('today-date')) $('today-date').dataset.t = 'demoBookings';
+  const status = () => t('signedInAs', { user: username });
   if ($('search-form')) {
-    document.querySelector('label[for="phone-search"]').textContent = 'Find a customer by username';
+    document.querySelector('label[for="phone-search"]').dataset.t = 'searchUsername';
     $('phone-search').type = 'text';
     $('phone-search').placeholder = 'user';
     $('search-form').addEventListener('submit', (e) => {
@@ -52,13 +51,17 @@
     }
     return { ...raw, id: raw.id || 'legacy-' + index };
   }
+  // Catalog keys; names are looked up at render time so they follow the language.
   const washNames = {
-    full: 'Full detail wash',
-    exterior: 'Exterior wash',
-    interior: 'Interior wash',
+    full: 'serviceFull',
+    exterior: 'serviceExterior',
+    interior: 'serviceInterior',
   };
-  const vehicleNames = { car: 'Car', suv: 'SUV', pickup: 'Pickup', van: 'Van', minivan: 'Minivan' };
-  const addonNames = { tires: 'Tire shine', wax: 'Premium wax' };
+  const vehicleNames = { car: 'car', suv: 'suv', pickup: 'pickup', van: 'van', minivan: 'minivan' };
+  const addonNames = { tires: 'tires', wax: 'wax' };
+  const named = (names, id, fallback) => (Object.hasOwn(names, id) ? t(names[id]) : id || fallback);
+  const translated = (names) =>
+    Object.fromEntries(Object.entries(names).map(([id, key]) => [id, t(key)]));
   function node(tag, className, text) {
     const element = document.createElement(tag);
     element.className = className;
@@ -76,8 +79,7 @@
     try {
       const all = WashDemo.read('bookings', []).map(parseBooking);
       const current = all.find((b) => b.id === id);
-      if (!current || !allowed(current))
-        throw new Error('This appointment has changed. Refresh and try again.');
+      if (!current || !allowed(current)) throw new Error(t('errorChanged'));
       WashDemo.save(
         'bookings',
         all.map((b) => (b.id === id ? { ...b, ...change } : b)),
@@ -95,7 +97,7 @@
   function openEditor(b, cancelOnly = false) {
     const content = $('dialog-content');
     content.replaceChildren();
-    const title = node('h2', '', cancelOnly ? 'Cancel appointment?' : 'Edit appointment');
+    const title = node('h2', '', t(cancelOnly ? 'cancelTitle' : 'editTitle'));
     title.id = 'dialog-title';
     const form = node('form', '');
     const error = node('p', 'error');
@@ -125,14 +127,10 @@
     }
     if (cancelOnly) {
       form.append(
-        node(
-          'p',
-          '',
-          `Cancel your appointment on ${b.date} at ${b.time}? The admin will be notified automatically.`,
-        ),
+        node('p', '', t('cancelPrompt', { date: formatDate(b.date), time: formatTime(b.time) })),
       );
     } else {
-      const date = field('date', 'Date (Tripoli time)', b.date);
+      const date = field('date', t('fieldDate'), b.date);
       const today = new Intl.DateTimeFormat('en-CA', {
         timeZone: WashConfig.timeZone,
         year: 'numeric',
@@ -147,19 +145,19 @@
         .slice(0, 10);
       field(
         'time',
-        'Time (Tripoli time)',
+        t('fieldTime'),
         b.time,
-        Object.fromEntries(WashConfig.timeSlots.map((time) => [time, time])),
+        Object.fromEntries(WashConfig.timeSlots.map((time) => [time, formatTime(time)])),
       );
-      field('type', 'Vehicle type', b.vehicle?.type, vehicleNames);
-      field('model', 'Vehicle make / model (optional)', b.vehicle?.model);
-      field('plate', 'License plate (optional)', b.vehicle?.plate);
-      field('package', 'Wash service', b.package, washNames);
+      field('type', t('vehicleType'), b.vehicle?.type, translated(vehicleNames));
+      field('model', t('fieldModel'), b.vehicle?.model);
+      field('plate', t('fieldPlate'), b.vehicle?.plate);
+      field('package', t('fieldService'), b.package, translated(washNames));
       const extras = Array.isArray(b.addons)
         ? b.addons
         : Object.keys(b.addons || {}).filter((key) => b.addons[key]);
       Object.entries(addonNames).forEach(([id, name]) => {
-        const label = node('label', '', name + ' ');
+        const label = node('label', '', t(name) + ' ');
         const input = node('input', '');
         input.type = 'checkbox';
         input.checked = extras.includes(id);
@@ -171,7 +169,7 @@
     const submit = node(
       'button',
       'primary-button',
-      cancelOnly ? 'Confirm cancellation' : 'Save changes',
+      t(cancelOnly ? 'confirmCancel' : 'saveChanges'),
     );
     submit.type = 'submit';
     form.append(error, submit);
@@ -185,7 +183,7 @@
           scheduled <= Date.now() ||
           scheduled > Date.now() + WashConfig.bookingHorizonDays * 86400000
         ) {
-          error.textContent = 'Choose a future appointment within the next 30 days.';
+          error.textContent = t('errorFuture');
           error.hidden = false;
           return;
         }
@@ -208,7 +206,7 @@
         change,
         (current) =>
           current.username === username && upcoming(current) && current.updatedAt === b.updatedAt,
-        cancelOnly ? 'Appointment canceled.' : 'Appointment updated.',
+        t(cancelOnly ? 'canceledMessage' : 'updatedMessage'),
       );
     });
     $('booking-dialog').showModal();
@@ -228,26 +226,24 @@
     document.querySelectorAll('[data-tab]').forEach((button) => {
       const past = button.dataset.tab === 'past';
       const count = visible.filter((b) => Boolean(historical(b)) === past).length;
-      button.textContent = (past ? 'History' : 'Active bookings') + ' (' + count + ')';
+      button.textContent = t('tabCount', { label: t(past ? 'tabHistory' : 'tabActive'), count });
       if (button.dataset.tab === tab) button.setAttribute('aria-current', 'page');
       else button.removeAttribute('aria-current');
     });
     const bookings = visible.filter((b) => Boolean(historical(b)) === (tab === 'past'));
     $('bookings').replaceChildren();
     if (!bookings.length) {
-      $('bookings').append(
-        node('p', 'notice', tab === 'past' ? 'No appointment history yet.' : 'No active bookings.'),
-      );
+      $('bookings').append(node('p', 'notice', t(tab === 'past' ? 'noHistory' : 'noActive')));
     }
     bookings.forEach((b) => {
       const completed = b.status === 'completed';
-      const washType = washNames[b.package] || b.package || 'Wash';
-      const vehicleType = vehicleNames[b.vehicle?.type] || b.vehicle?.type || 'Vehicle';
+      const washType = named(washNames, b.package, t('fallbackWash'));
+      const vehicleType = named(vehicleNames, b.vehicle?.type, t('vehicle'));
       const card = node('article', 'appointment-card');
       const header = node('header', 'appointment-header');
       const heading = node('div', '');
       heading.append(
-        node('p', 'appointment-label', 'CAR CARE APPOINTMENT'),
+        node('p', 'appointment-label', t('appointmentLabel')),
         node('h2', '', washType),
       );
       header.append(
@@ -255,74 +251,67 @@
         node(
           'span',
           'appointment-badge' + (canceled(b) ? ' canceled' : completed ? ' completed' : ''),
-          canceled(b) ? 'Canceled' : completed ? 'Completed' : 'Upcoming',
+          t(canceled(b) ? 'statusCanceled' : completed ? 'statusCompleted' : 'statusUpcoming'),
         ),
       );
       const details = node('dl', 'appointment-details');
       [
-        ['Username', b.username],
-        ['\u{1F4C5} Date', b.date],
-        ['\u{1F552} Time', b.time],
-        ['Vehicle type', vehicleType],
-        ['Make / model', b.vehicle?.model],
-        ['License plate', b.vehicle?.plate],
+        ['username', b.username],
+        ['detailDate', b.date && formatDate(b.date)],
+        ['detailTime', b.time && formatTime(b.time)],
+        ['vehicleType', vehicleType],
+        ['makeModel', b.vehicle?.model],
+        ['licensePlate', b.vehicle?.plate],
       ].forEach(([label, value]) => {
         const group = node('div', '');
-        group.append(node('dt', '', label), node('dd', '', value || 'Not specified'));
+        group.append(node('dt', '', t(label)), node('dd', '', value || t('notSpecified')));
         details.append(group);
       });
       card.append(header, details);
       const extras = Array.isArray(b.addons)
         ? b.addons
         : Object.keys(b.addons || {}).filter((key) => b.addons[key]);
+      const extraNames = formatList(extras.map((key) => named(addonNames, key)));
       if (extras.length)
-        card.append(
-          node(
-            'p',
-            'appointment-extras',
-            'Extras: ' + extras.map((key) => addonNames[key] || key).join(', '),
-          ),
-        );
+        card.append(node('p', 'appointment-extras', t('extrasList', { list: extraNames })));
       if (isAdmin) {
         const management = node('section', 'appointment-management');
         const summary = node('div', '');
         summary.append(
-          node('h3', '', 'Admin Management'),
+          node('h3', '', t('adminManagement')),
           node(
             'p',
             '',
-            washType +
-              ' package for a ' +
-              vehicleType +
-              (extras.length
-                ? ' with ' + extras.map((key) => addonNames[key] || key).join(' and ')
-                : '') +
-              '.',
+            t('adminSummary', {
+              wash: washType,
+              vehicle: vehicleType,
+              extras: extras.length ? t('adminSummaryExtras', { list: extraNames }) : '',
+            }),
           ),
         );
         management.append(summary);
         if (canceled(b) && !b.dismissedAt) {
-          const dismiss = node('button', 'back-button', 'Dismiss from queue');
+          const dismiss = node('button', 'back-button', t('dismiss'));
           dismiss.type = 'button';
           dismiss.addEventListener('click', () =>
             updateBooking(
               b.id,
               { dismissedAt: new Date().toISOString() },
               (current) => canceled(current) && !current.dismissedAt,
-              'Canceled appointment dismissed from the active queue.',
+              t('dismissedMessage'),
             ),
           );
           management.append(dismiss);
         }
         if (!completed && !canceled(b)) {
-          const complete = node('button', 'primary-button', 'Mark as Completed');
+          const complete = node('button', 'primary-button', t('markCompleted'));
           complete.type = 'button';
           complete.addEventListener('click', () => {
             updateBooking(
               b.id,
               { status: 'completed', completedAt: new Date().toISOString() },
               (current) => !canceled(current) && current.status !== 'completed',
-              'Appointment completed and moved to History.',
+              t('completedMessage'),
             );
           });
           management.append(complete);
@@ -331,8 +320,8 @@
       }
       if (!isAdmin && upcoming(b)) {
         const actions = node('section', 'appointment-management');
-        const edit = node('button', 'primary-button', 'Edit / reschedule');
-        const cancel = node('button', 'back-button', 'Cancel appointment');
+        const edit = node('button', 'primary-button', t('editReschedule'));
+        const cancel = node('button', 'back-button', t('cancelAppointment'));
         edit.type = cancel.type = 'button';
         edit.addEventListener('click', () => openEditor(b));
         cancel.addEventListener('click', () => openEditor(b, true));
@@ -353,6 +342,12 @@
     WashDemo.save('account', null);
     location.replace('login.html');
   });
+  document.addEventListener('wash:language', () => {
+    $('page-status').textContent = status();
+    render();
+  });
+  WashI18n.translateDocument();
+  $('page-status').textContent = status();
   render();
   const requested = new URLSearchParams(location.search);
   if (!isAdmin && ['edit', 'cancel'].includes(requested.get('action'))) {

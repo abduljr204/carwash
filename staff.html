@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Staff dashboard | Naqa Qurtuba</title>
+    <title data-t="staffPageTitle">Staff dashboard | Naqa Qurtuba</title>
     <link rel="stylesheet" href="journey/styles.css" />
     <link rel="stylesheet" href="journey/manage.css" />
     <script defer src="journey/demo.js"></script>
     <script defer src="journey/config.js"></script>
+    <script defer src="journey/i18n.js"></script>
     <script defer src="journey/manage.js"></script>
   </head>
   <body data-dashboard="staff">
@@ -15,29 +16,33 @@
       <a class="brand" href="index.html"
         ><span class="brand-mark" aria-hidden="true">ق</span
         ><span
-          ><strong>NAQA QURTUBA</strong><small data-m="staffArea">STAFF / CHECK-IN</small></span
+          ><strong data-t="brand">NAQA QURTUBA</strong
+          ><small data-t="staffArea">STAFF / CHECK-IN</small></span
         ></a
       >
       <div class="header-actions">
-        <span id="signed-in-phone" dir="ltr"></span
-        ><button class="back-button" id="language">العربية</button
-        ><button class="back-button" id="logout" data-m="logout">Log out</button>
+        <span id="signed-in-phone" dir="ltr"></span>
+        <div class="language-toggle" role="group" data-label="language" aria-label="Language">
+          <button type="button" data-language="en" lang="en" aria-pressed="true">English</button
+          ><button type="button" data-language="ar" lang="ar" aria-pressed="false">العربية</button>
+        </div>
+        <button class="back-button" id="logout" data-t="logout">Log out</button>
       </div>
     </header>
     <main class="manage-main">
       <div class="manage-heading">
         <div>
-          <p class="eyebrow" data-m="staffArea">STAFF / CHECK-IN</p>
-          <h1 data-m="todayBookings">Today's bookings</h1>
+          <p class="eyebrow" data-t="staffArea">STAFF / CHECK-IN</p>
+          <h1>Today's bookings</h1>
           <p class="muted" id="today-date"></p>
         </div>
-        <button id="scan" class="primary-button" data-m="scan">Scan QR code</button>
+        <button id="scan" class="primary-button">Scan QR code</button>
       </div>
       <p id="reminder-notice" class="notice" hidden></p>
       <p id="page-error" class="error" role="alert" hidden></p>
       <p id="page-status" role="status" aria-live="polite"></p>
       <form id="search-form" class="search-form">
-        <label for="phone-search" data-m="searchLabel">Find a customer by phone number</label>
+        <label for="phone-search">Find a customer by phone number</label>
         <div>
           <input
             type="tel"
@@ -45,26 +50,34 @@
             placeholder="091 210 3120"
             dir="ltr"
             maxlength="30"
-          /><button class="primary-button" data-m="search">Search</button
-          ><button type="button" class="back-button" id="clear-search" data-m="clear">
+          /><button class="primary-button" data-t="search">Search</button
+          ><button type="button" class="back-button" id="clear-search" data-t="showAll">
             Show all
           </button>
         </div>
       </form>
-      <nav class="manage-tabs" aria-label="Appointments">
+      <nav class="manage-tabs" data-label="appointments" aria-label="Appointments">
         <button type="button" data-tab="active" aria-current="page">Active bookings</button>
         <button type="button" data-tab="past">Past washes</button>
       </nav>
       <div class="staff-list-heading">
-        <h2 data-m="arrivalQueue">Appointments</h2>
-        <button class="back-button" id="refresh" data-m="refresh">Refresh</button>
+        <h2 data-t="appointments">Appointments</h2>
+        <button class="back-button" id="refresh" data-t="refresh">Refresh</button>
       </div>
-      <section id="bookings" aria-live="polite" aria-label="Appointments">
-        <p data-m="loading">Loading appointments…</p>
+      <section id="bookings" aria-live="polite" data-label="appointments" aria-label="Appointments">
+        <p data-t="loading">Loading appointments…</p>
       </section>
     </main>
     <dialog id="booking-dialog" aria-labelledby="dialog-title">
-      <button type="button" id="close-dialog" class="close-dialog" aria-label="Close">×</button>
+      <button
+        type="button"
+        id="close-dialog"
+        class="close-dialog"
+        data-label="closeDialog"
+        aria-label="Close"
+      >
+        ×
+      </button>
       <div id="dialog-content"></div>
     </dialog>
   </body>

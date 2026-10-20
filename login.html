@@ -4,84 +4,89 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#111310" />
-    <title>Welcome back | Naqa Qurtuba</title>
+    <title data-t="loginPageTitle">Welcome back | Naqa Qurtuba</title>
     <link rel="stylesheet" href="journey/styles.css" />
     <link rel="stylesheet" href="journey/account.css" />
     <script defer src="journey/demo.js"></script>
+    <script defer src="journey/i18n.js"></script>
     <script defer src="journey/account.js"></script>
   </head>
   <body data-auth="login">
     <header class="site-header">
       <a class="brand" href="index.html"
         ><span class="brand-mark" aria-hidden="true">&#1602;</span
-        ><span><strong>NAQA QURTUBA</strong><small>CAR CARE / TRIPOLI</small></span></a
+        ><span
+          ><strong data-t="brand">NAQA QURTUBA</strong
+          ><small data-t="brandSub">CAR CARE / TRIPOLI</small></span
+        ></a
       >
       <div class="header-actions">
-        <a class="account-link" href="index.html" data-account="back">Back to the wash</a>
-        <div class="language-toggle" role="group" aria-label="Language">
-          <button type="button" data-auth-language="en" aria-pressed="true">EN</button
-          ><button type="button" data-auth-language="ar" lang="ar" aria-pressed="false">
-            &#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;
-          </button>
+        <a class="account-link" href="index.html" data-t="backToWash">Back to the wash</a>
+        <div class="language-toggle" role="group" data-label="language" aria-label="Language">
+          <button type="button" data-language="en" lang="en" aria-pressed="true">English</button
+          ><button type="button" data-language="ar" lang="ar" aria-pressed="false">العربية</button>
         </div>
       </div>
     </header>
     <main class="auth-layout">
       <section class="auth-story">
-        <p class="eyebrow" data-account="care">A FRESH START.</p>
+        <p class="eyebrow" data-t="authCare">A FRESH START.</p>
         <h1>
-          <span data-account="yourCar">Your car.</span><br /><em data-account="yourClean"
+          <span data-t="authYourCar">Your car.</span><br /><em data-t="authYourClean"
             >Your clean.</em
           >
         </h1>
-        <p data-account="story">
-          A little care goes a long way. Your next fresh start begins here.
-        </p>
+        <p data-t="authStory">A little care goes a long way. Your next fresh start begins here.</p>
         <div class="photo-pair">
           <figure>
             <div class="photo-crop">
               <img
                 src="assets/wash-pair.png"
+                data-alt="beforeAlt"
                 alt="Black sedan before washing, covered in dirt"
                 width="1774"
                 height="887"
                 loading="lazy"
               />
             </div>
-            <figcaption data-account="before">BEFORE</figcaption>
+            <figcaption data-t="before">BEFORE</figcaption>
           </figure>
           <figure>
             <div class="photo-crop after">
               <img
                 src="assets/wash-pair.png"
+                data-alt="afterAlt"
                 alt="The same black sedan after washing, clean and polished"
                 width="1774"
                 height="887"
                 loading="lazy"
               />
             </div>
-            <figcaption data-account="after">AFTER</figcaption>
+            <figcaption data-t="after">AFTER</figcaption>
           </figure>
         </div>
       </section>
       <section class="auth-card" aria-labelledby="auth-title">
-        <p class="eyebrow">BROWSER DEMO</p>
-        <h2 id="auth-title" data-account="loginTitle">Welcome back</h2>
-        <p data-account="loginIntro">Log in with a test username and password.</p>
+        <p class="eyebrow" data-t="browserDemo">BROWSER DEMO</p>
+        <h2 id="auth-title" data-t="loginTitle">Welcome back</h2>
+        <p data-t="loginIntro">Log in with a test username and password.</p>
         <form id="auth-form" novalidate>
-          <label for="username" data-account="username">Username</label
+          <label for="username" data-t="username">Username</label
           ><input
             id="username"
             name="username"
             type="text"
             autocomplete="username"
             dir="ltr"
+            data-placeholder="usernamePlaceholder"
             placeholder="admin or user"
             required
             maxlength="30"
             aria-describedby="phone-hint"
-          /><small id="phone-hint">Test accounts: admin / admin123 or user / user123.</small>
-          <label for="password" data-account="password">Password</label>
+          /><small id="phone-hint" data-html="usernameHint"
+            >Test accounts: admin / admin123 or user / user123.</small
+          >
+          <label for="password" data-t="password">Password</label>
           <div class="password-field">
             <input
               id="password"
@@ -96,19 +101,19 @@
               type="button"
               aria-controls="password"
               aria-pressed="false"
-              data-account="show"
+              data-t="show"
             >
               Show
             </button>
           </div>
-          <small id="password-hint">Enter the test account password.</small>
+          <small id="password-hint" data-t="passwordHint">Enter the test account password.</small>
 
           <p id="auth-error" class="auth-error" role="alert" hidden></p>
-          <button class="primary-button" id="auth-submit" type="submit" data-account="login">
+          <button class="primary-button" id="auth-submit" type="submit" data-t="login">
             Log in
           </button>
         </form>
-        <p class="auth-switch">Demo accounts only. No registration required.</p>
+        <p class="auth-switch" data-t="authSwitch">Demo accounts only. No registration required.</p>
         <noscript>Enable JavaScript to try this browser-only demo.</noscript>
       </section>
     </main>

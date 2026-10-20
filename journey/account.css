@@ -49,6 +49,8 @@
   background: var(--surface);
 }
 .photo-crop {
+  /* Each crop shows one half of a shared image, so it must not mirror in RTL. */
+  direction: ltr;
   aspect-ratio: 1;
   overflow: hidden;
 }

@@ -50,12 +50,9 @@
   // Work with YYYY-MM-DD keys. Use UTC only to do date arithmetic, and
   // Africa/Tripoli to determine today's date / time at the business.
   // ------------------------------------------------------------------
+  // Arabic locale data prints "US$", which reads as "$US" in RTL; the catalog owns the symbol.
   function formatMoney(value) {
-    return new Intl.NumberFormat(i18n.locale(), {
-      style: 'currency',
-      currency: config.currency,
-      maximumFractionDigits: 0,
-    }).format(value);
+    return t('money', { price: formatNumber(value) });
   }
   function formatNumber(value) {
     return new Intl.NumberFormat(i18n.locale()).format(value);
@@ -550,11 +547,6 @@
       state.policyAccepted = event.target.checked;
       clearError();
     });
-    document
-      .querySelectorAll('[data-language]')
-      .forEach((button) =>
-        button.addEventListener('click', () => i18n.setLanguage(button.dataset.language)),
-      );
     document.addEventListener('wash:language', renderAll);
   }
 

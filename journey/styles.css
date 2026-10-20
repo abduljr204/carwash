@@ -1176,6 +1176,10 @@ dialog .back-button {
 [dir='rtl'] .stage-bottom {
   font-size: 10px;
 }
+/* Tracking breaks the joins between Arabic letters, so no element keeps it. */
+[dir='rtl'] * {
+  letter-spacing: normal !important;
+}
 [dir='rtl'] .icon-button {
   transform: scaleX(-1);
 }

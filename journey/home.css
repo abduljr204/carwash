@@ -338,8 +338,7 @@
 .home .header-actions {
   gap: 14px;
 }
-.home .header-actions .call-link,
-.home .language-toggle {
+.home .header-actions .call-link {
   display: none;
 }
 .payment-status {

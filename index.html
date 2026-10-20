@@ -8,7 +8,7 @@
       name="description"
       content="An interactive car-care booking experience for Naqa Qurtuba, Tripoli."
     />
-    <title>Naqa Qurtuba | The Wash Lab</title>
+    <title data-t="pageTitle">Naqa Qurtuba | The Wash Lab</title>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='12' fill='%23111310'/%3E%3Ctext x='30' y='44' text-anchor='middle' font-size='42' font-family='Arial' fill='%23dfff00'%3EQ%3C/text%3E%3C/svg%3E"
@@ -48,19 +48,21 @@
           <small data-t="brandSub"> CAR CARE / TRIPOLI </small>
         </span>
       </a>
-      <nav class="home-nav" aria-label="Main navigation">
-        <a href="#services">Services</a><a href="#pricing">Pricing</a>
-        <a href="#booking">Packages</a><a href="#how-it-works">How It Works</a
-        ><a href="#contact">Contact</a>
+      <nav class="home-nav" data-label="mainNav" aria-label="Main navigation">
+        <a href="#services" data-t="navServices">Services</a
+        ><a href="#pricing" data-t="navPricing">Pricing</a>
+        <a href="#booking" data-t="navPackages">Packages</a
+        ><a href="#how-it-works" data-t="navHow">How It Works</a
+        ><a href="#contact" data-t="navContact">Contact</a>
       </nav>
       <div class="header-actions">
-        <span class="payment-status">● Appointments: Pay at wash</span>
+        <span class="payment-status" data-t="paymentStatus">● Appointments: Pay at wash</span>
         <div class="account-status">
-          <a class="account-link" href="login.html">My Bookings ↗</a>
+          <a class="account-link" href="login.html" data-t="myBookings">My Bookings ↗</a>
         </div>
         <a class="call-link" href="tel:+218912103120" data-t="help"> Need a hand? </a>
         <div class="language-toggle" role="group" data-label="language" aria-label="Language">
-          <button type="button" data-language="en" lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-language="en" lang="en" aria-pressed="true">English</button>
           <button type="button" data-language="ar" lang="ar" aria-pressed="false">العربية</button>
         </div>
       </div>
@@ -68,41 +70,47 @@
     <main id="wash-lab">
       <section class="home-hero" aria-labelledby="home-title">
         <div class="hero-copy">
-          <p class="eyebrow">01 / QUICK BOOKING</p>
-          <h1 id="home-title">Your Car.<br />Your <span>Clean.</span></h1>
-          <p class="hero-description">
+          <p class="eyebrow" data-t="heroEyebrow">01 / QUICK BOOKING</p>
+          <h1 id="home-title" data-html="heroTitle">Your Car.<br />Your <span>Clean.</span></h1>
+          <p class="hero-description" data-t="heroDesc">
             Pick your vehicle, choose your wash, and manage your time in seconds.
           </p>
-          <a class="primary-button hero-cta" href="#booking"
+          <a class="primary-button hero-cta" href="#booking" data-html="heroCta"
             >Book a Car Wash <span aria-hidden="true">↗</span></a
           >
           <div class="hero-assurances">
-            <span>↗ On your schedule</span><span>◎ Pay at the wash</span>
+            <span data-t="heroSchedule">↗ On your schedule</span
+            ><span data-t="heroPay">◎ Pay at the wash</span>
           </div>
         </div>
         <div
           class="hero-canvas photo-studio mist-active"
+          data-label="heroCanvas"
           aria-label="Photorealistic car wash studio preview"
         >
           <div class="canvas-caption">
-            <span>● LIVE CONFIGURATION</span><span>STUDIO / 001</span>
+            <span data-t="studioLive">● LIVE CONFIGURATION</span
+            ><span data-t="studioId">STUDIO / 001</span>
           </div>
           <img
             class="studio-photo"
             src="assets/red-aston-studio.png"
             width="1402"
             height="1122"
+            data-alt="heroAlt"
             alt="Metallic red Aston Martin under water spray on a glowing lime platform, reflected in the wet studio floor"
             fetchpriority="high"
           />
           <div class="photo-mist" aria-hidden="true"></div>
           <div class="photo-light" aria-hidden="true"></div>
-          <div class="studio-controls" aria-label="Studio controls">
+          <div class="studio-controls" data-label="studioControls" aria-label="Studio controls">
             <button
               id="studio-rotate"
               type="button"
               aria-pressed="false"
               disabled
+              data-t="autoRotate"
+              data-tip="rotateUnavailable"
               title="360° rotation is unavailable for this photographic preview"
             >
               Auto rotate
@@ -111,6 +119,8 @@
               id="studio-lights"
               type="button"
               aria-pressed="false"
+              data-t="headlights"
+              data-label="headlightsLabel"
               aria-label="Headlights: toggle additional glow"
             >
               Headlights
@@ -119,46 +129,61 @@
               id="studio-mist"
               type="button"
               aria-pressed="true"
+              data-t="waterMist"
+              data-label="mistLabel"
               aria-label="Water mist: toggle animated overlay"
             >
               Water mist
             </button>
           </div>
-          <p id="studio-status" class="studio-status" role="status">
+          <p id="studio-status" class="studio-status" role="status" data-t="studioStatus">
             STUDIO / PHOTOGRAPHIC PREVIEW
           </p>
           <span class="canvas-cross cross-one" aria-hidden="true">+</span
           ><span class="canvas-cross cross-two" aria-hidden="true">+</span>
           <div class="canvas-bottom">
-            <span>PRECISION CARE.<br /><strong>EVERY ANGLE.</strong></span
-            ><span class="canvas-spec">TOP VIEW<br />32.88° N / TRIPOLI</span>
+            <span data-html="studioTagline">PRECISION CARE.<br /><strong>EVERY ANGLE.</strong></span
+            ><span class="canvas-spec" data-html="studioSpec"
+              >TOP VIEW<br />32.88° N / TRIPOLI</span
+            >
           </div>
         </div>
       </section>
-      <section class="quote-switcher" aria-label="Quick wash quote">
+      <section class="quote-switcher" data-label="quickQuote" aria-label="Quick wash quote">
         <div>
-          <p class="eyebrow">YOUR CLEAN, YOUR WAY</p>
+          <p class="eyebrow" data-t="quoteEyebrow">YOUR CLEAN, YOUR WAY</p>
           <p id="hero-quote-copy" aria-live="polite">A fresh finish for your everyday drive.</p>
         </div>
-        <div class="quote-options" role="group" aria-label="Wash coverage">
-          <button type="button" data-quote="exterior" aria-pressed="true">Exterior</button
-          ><button type="button" data-quote="full" aria-pressed="false">Full wash</button
-          ><button type="button" data-quote="interior" aria-pressed="false">Interior</button>
+        <div
+          class="quote-options"
+          role="group"
+          data-label="washCoverage"
+          aria-label="Wash coverage"
+        >
+          <button type="button" data-quote="exterior" aria-pressed="true" data-t="quoteExterior">
+            Exterior</button
+          ><button type="button" data-quote="full" aria-pressed="false" data-t="quoteFull">
+            Full wash</button
+          ><button type="button" data-quote="interior" aria-pressed="false" data-t="quoteInterior">
+            Interior
+          </button>
         </div>
         <div class="hero-quote-price">
           <strong id="hero-quote-price" aria-live="polite">$15 USD</strong
-          ><span>Car / sample estimate</span>
+          ><span data-t="quoteNote">Car / sample estimate</span>
         </div>
       </section>
       <section
         id="active-appointment"
         class="active-appointment"
+        data-label="nextAppointment"
         aria-label="Your next appointment"
         aria-live="polite"
         hidden
       ></section>
       <div class="booking-section-label" id="booking">
-        <span>THE WASH CONFIGURATOR</span><span>FOUR STEPS. ONE FRESH START.</span>
+        <span data-t="configuratorLabel">THE WASH CONFIGURATOR</span
+        ><span data-t="configuratorSub">FOUR STEPS. ONE FRESH START.</span>
       </div>
       <!-- ================================================================
          2. JOURNEY PROGRESS — completed steps remain editable.
@@ -166,7 +191,7 @@
       <section class="journey-heading" aria-labelledby="journey-title">
         <div>
           <p class="eyebrow" data-t="introLabel">A LITTLE PLAY. A LOT OF SHINE.</p>
-          <h2 id="journey-title">Make it your wash.</h2>
+          <h2 id="journey-title" data-t="journeyTitle">Make it your wash.</h2>
         </div>
         <p class="prototype-label">
           <span aria-hidden="true"> ◈ </span>
@@ -554,60 +579,70 @@
       <section class="home-services" id="services" aria-labelledby="services-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">02 / A CLEAN FOR EVERY CAR</p>
-            <h2 id="services-title">Less dirt. More detail.</h2>
+            <p class="eyebrow" data-t="servicesEyebrow">02 / A CLEAN FOR EVERY CAR</p>
+            <h2 id="services-title" data-t="servicesTitle">Less dirt. More detail.</h2>
           </div>
-          <p>Choose your coverage.<br />We'll take care of the rest.</p>
+          <p data-html="servicesIntro">Choose your coverage.<br />We'll take care of the rest.</p>
         </div>
         <div class="service-grid" id="pricing">
           <a class="service-card" href="#booking"
-            ><span class="service-number">01 / EXTERIOR</span>
-            <h3>A fresh first impression.</h3>
-            <p>Exterior wash for a clean finish from every angle.</p>
-            <div><strong data-home-price="exterior"></strong><span>Configure ↗</span></div></a
+            ><span class="service-number" data-t="service1Number">01 / EXTERIOR</span>
+            <h3 data-t="service1Title">A fresh first impression.</h3>
+            <p data-t="service1Desc">Exterior wash for a clean finish from every angle.</p>
+            <div>
+              <strong data-home-price="exterior"></strong
+              ><span data-t="configure">Configure ↗</span>
+            </div></a
           >
           <a class="service-card featured" href="#booking"
-            ><span class="service-number">02 / FULL WASH <b>INSIDE + OUT</b></span>
-            <h3>The complete reset.</h3>
-            <p>Interior and exterior coverage in one complete wash.</p>
-            <div><strong data-home-price="full"></strong><span>Configure ↗</span></div></a
+            ><span class="service-number" data-html="service2Number"
+              >02 / FULL WASH <b>INSIDE + OUT</b></span
+            >
+            <h3 data-t="service2Title">The complete reset.</h3>
+            <p data-t="service2Desc">Interior and exterior coverage in one complete wash.</p>
+            <div>
+              <strong data-home-price="full"></strong><span data-t="configure">Configure ↗</span>
+            </div></a
           >
           <a class="service-card" href="#booking"
-            ><span class="service-number">03 / INTERIOR</span>
-            <h3>Good on the inside.</h3>
-            <p>Give your cabin the attention it deserves.</p>
-            <div><strong data-home-price="interior"></strong><span>Configure ↗</span></div></a
+            ><span class="service-number" data-t="service3Number">03 / INTERIOR</span>
+            <h3 data-t="service3Title">Good on the inside.</h3>
+            <p data-t="service3Desc">Give your cabin the attention it deserves.</p>
+            <div>
+              <strong data-home-price="interior"></strong
+              ><span data-t="configure">Configure ↗</span>
+            </div></a
           >
         </div>
-        <p class="quiet-note">
+        <p class="quiet-note" data-t="servicesNote">
           Sample USD estimates for a car. Vehicle type and extras change your total.
         </p>
       </section>
       <section class="how-section" id="how-it-works" aria-labelledby="how-title">
         <div>
-          <p class="eyebrow">03 / KEEP IT SIMPLE</p>
-          <h2 id="how-title">Your next clean,<br />without the wait.</h2>
+          <p class="eyebrow" data-t="howEyebrow">03 / KEEP IT SIMPLE</p>
+          <h2 id="how-title" data-html="howTitle">Your next clean,<br />without the wait.</h2>
         </div>
         <ol>
           <li>
             <span>01</span>
             <div>
-              <h3>Build your wash</h3>
-              <p>Choose your ride, coverage, and finishing touches.</p>
+              <h3 data-t="how1Title">Build your wash</h3>
+              <p data-t="how1Desc">Choose your ride, coverage, and finishing touches.</p>
             </div>
           </li>
           <li>
             <span>02</span>
             <div>
-              <h3>Pick your moment</h3>
-              <p>Choose a date and time that work for you.</p>
+              <h3 data-t="how2Title">Pick your moment</h3>
+              <p data-t="how2Desc">Choose a date and time that work for you.</p>
             </div>
           </li>
           <li>
             <span>03</span>
             <div>
-              <h3>Show up. Shine on.</h3>
-              <p>Pay at the wash. Manage your appointment in My Bookings.</p>
+              <h3 data-t="how3Title">Show up. Shine on.</h3>
+              <p data-t="how3Desc">Pay at the wash. Manage your appointment in My Bookings.</p>
             </div>
           </li>
         </ol>
@@ -616,10 +651,10 @@
     <footer class="staff-footer">
       <div id="contact" class="home-contact">
         <div>
-          <strong>NAQA QURTUBA<span> / CAR CARE</span></strong>
-          <p>Fresh starts here. Tripoli, Libya.</p>
+          <strong data-html="footerBrand">NAQA QURTUBA<span> / CAR CARE</span></strong>
+          <p data-t="footerTagline">Fresh starts here. Tripoli, Libya.</p>
         </div>
-        <a href="tel:+218912103120">Need a hand? +218 91 210 3120 ↗</a>
+        <a href="tel:+218912103120" data-html="footerCall">Need a hand? +218 91 210 3120 ↗</a>
       </div>
       <a href="login.html?staff=1" data-t="staffLogin">Staff login</a>
     </footer>
