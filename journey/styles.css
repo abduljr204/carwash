@@ -146,17 +146,14 @@ input[type='radio'] {
   gap: 12px;
   align-items: center;
 }
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 44px;
+/* Alfa logo: a red tile with the wordmark, recreated from the storefront sign. */
+.brand-logo {
+  display: block;
+  width: auto;
   height: 44px;
-  color: var(--on-primary);
-  background: var(--brand-primary);
-  border-radius: 12px;
+  flex-shrink: 0;
+  border-radius: 10px;
   box-shadow: 0 6px 18px rgb(215 20 30 / 0.35);
-  font-size: 30px;
-  line-height: 1;
 }
 .brand strong {
   font-size: 14px;
@@ -1316,10 +1313,8 @@ dialog .back-button {
     font-size: 8px;
     letter-spacing: 1px;
   }
-  .brand-mark {
-    width: 37px;
-    height: 40px;
-    font-size: 33px;
+  .brand-logo {
+    height: 38px;
   }
   .header-actions {
     gap: 0;

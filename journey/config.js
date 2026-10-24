@@ -3,7 +3,7 @@
    Contains data only. No DOM access, calculations, or animations.
    ==================================================================== */
 const washConfig = Object.freeze({
-  currency: 'USD',
+  currency: 'LYD',
   timeZone: 'Africa/Tripoli',
   bookingHorizonDays: 30,
   slotCapacity: 3,

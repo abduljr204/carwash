@@ -24,7 +24,7 @@
   });
   document.getElementById('hero-car')?.append(preview);
   const { t } = WashI18n;
-  const money = (value) => t('priceUsd', { price: value });
+  const money = (value) => t('priceLyd', { price: value });
   const quoteCopy = {
     exterior: 'quoteCopyExterior',
     full: 'quoteCopyFull',
