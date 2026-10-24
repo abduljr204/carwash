@@ -12,7 +12,7 @@ try {
   viewport.append(renderer.domElement);
   renderer.domElement.setAttribute('aria-hidden', 'true');
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x121418, 0.04);
+  scene.fog = new THREE.FogExp2(0x070d1c, 0.04);
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 60);
   camera.position.set(6, 3.7, 6);
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -23,11 +23,11 @@ try {
   controls.minPolarAngle = 0.3;
   controls.maxPolarAngle = Math.PI / 2 - 0.04;
   controls.autoRotateSpeed = 0.6;
-  scene.add(new THREE.HemisphereLight(0xe8efff, 0x3a4425, 3));
+  scene.add(new THREE.HemisphereLight(0xe8efff, 0x1b2f8f, 3));
   const key = new THREE.DirectionalLight(0xffffff, 5);
   key.position.set(3, 7, 5);
   scene.add(key);
-  const rim = new THREE.PointLight(0xccff00, 35, 15);
+  const rim = new THREE.PointLight(0xd7141e, 35, 15);
   rim.position.set(-3, 2, -2);
   scene.add(rim);
   const fill = new THREE.PointLight(0x8eaaff, 20, 12);
@@ -54,8 +54,8 @@ try {
     roughness: 0.3,
   });
   const lime = new THREE.MeshStandardMaterial({
-    color: 0xccff00,
-    emissive: 0xccff00,
+    color: 0xd7141e,
+    emissive: 0xd7141e,
     emissiveIntensity: 2,
   });
   const lamps = new THREE.MeshStandardMaterial({

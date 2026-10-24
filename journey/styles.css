@@ -1,19 +1,35 @@
 /* ====================================================================
    01. BRAND TOKENS AND BASE
-   Provisional palette from the Facebook brand. Replace only these tokens
-   to retheme; foreground tokens should maintain accessible contrast.
+   Official team colors: Alfa red, white and navy. Replace only these
+   tokens to retheme. Red fills carry white text (5.2:1); text accents on
+   navy use --brand-primary-text, since pure red is under 4.5:1 there.
    ==================================================================== */
 :root {
-  --brand-primary: #dfff00;
-  --brand-secondary: #111310;
+  --brand-primary: #d7141e;
+  --brand-primary-strong: #b8101a;
+  --brand-primary-text: #ff4d55;
+  --brand-primary-soft: rgb(215 20 30 / 0.12);
+  --brand-secondary: #070d1c;
+  --brand-navy: #1b2f8f;
+  --brand-blue: #7fa2ff;
   --brand-accent: #ffffff;
-  --surface: #1a1d18;
-  --surface-raised: #242820;
-  --border: #34392e;
-  --text: #f0f2eb;
-  --muted: #a0a794;
-  --on-primary: #12150c;
-  --radius: 14px;
+  --surface: #0e1729;
+  --surface-raised: #15203a;
+  --surface-sunken: #0a1222;
+  --border: #233152;
+  --border-strong: #34466f;
+  --text: #f5f7fb;
+  --text-soft: #c9d1e3;
+  --muted: #9aa6bf;
+  --subtle: #6c7a99;
+  --on-primary: #ffffff;
+  --focus: var(--brand-blue);
+  --success: #7ee2a8;
+  --danger-text: #ff8a8a;
+  --radius: 18px;
+  --shadow: 0 18px 40px rgb(0 0 0 / 0.35);
+  --font: Inter, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --font-arabic: 'IBM Plex Sans Arabic', Tahoma, Arial, sans-serif;
 }
 * {
   box-sizing: border-box;
@@ -21,15 +37,14 @@
 html {
   color-scheme: dark;
   scroll-padding-top: 24px;
+  scroll-behavior: smooth;
 }
 body {
   margin: 0;
   background: var(--brand-secondary);
   color: var(--text);
-  font:
-    16px/1.55 Arial,
-    Helvetica,
-    sans-serif;
+  font: 16px/1.6 var(--font);
+  -webkit-font-smoothing: antialiased;
 }
 button,
 input {
@@ -49,7 +64,7 @@ button {
 }
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.35;
+  opacity: 0.45;
 }
 a {
   color: inherit;
@@ -59,8 +74,8 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 [role='button']:focus-visible {
-  outline: 2px solid var(--brand-primary);
-  outline-offset: 5px;
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
 }
 [hidden] {
   display: none !important;
@@ -93,7 +108,7 @@ input[type='radio'] {
   inset-block-start: 12px;
 }
 .eyebrow {
-  color: var(--brand-primary);
+  color: var(--brand-primary-text);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -103,15 +118,28 @@ input[type='radio'] {
 /* ====================================================================
    02. HEADER AND JOURNEY PROGRESS
    ==================================================================== */
+/* Full-bleed bar with a red brand rule; content aligns to a 1344px column. */
 .site-header {
-  max-width: 1440px;
-  margin: auto;
-  padding: 22px 48px;
+  position: relative;
+  z-index: 20;
+  padding: 18px max(48px, calc((100% - 1344px) / 2));
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
+  background: rgb(7 13 28 / 0.84);
+  backdrop-filter: blur(14px);
+  border-top: 3px solid var(--brand-primary);
   border-bottom: 1px solid var(--border);
+}
+@media (min-width: 851px) {
+  html {
+    scroll-padding-top: 104px;
+  }
+  .site-header {
+    position: sticky;
+    top: 0;
+  }
 }
 .brand {
   display: flex;
@@ -123,10 +151,11 @@ input[type='radio'] {
   place-items: center;
   width: 44px;
   height: 44px;
-  color: var(--brand-primary);
-  border: 1px solid #79825d;
-  border-radius: 11px;
-  font-size: 37px;
+  color: var(--on-primary);
+  background: var(--brand-primary);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgb(215 20 30 / 0.35);
+  font-size: 30px;
   line-height: 1;
 }
 .brand strong {
@@ -148,7 +177,7 @@ input[type='radio'] {
   letter-spacing: 3px;
 }
 .header-caption > span:first-child {
-  color: var(--brand-primary);
+  color: var(--brand-primary-text);
   font-size: 22px;
 }
 .header-actions {
@@ -164,17 +193,21 @@ input[type='radio'] {
   direction: ltr;
   display: flex;
   border: 1px solid var(--border);
-  padding: 4px;
-  border-radius: 8px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--surface);
 }
 .language-toggle button {
-  min-height: 38px;
+  min-height: 36px;
   min-width: 42px;
-  padding: 5px 10px;
+  padding: 5px 12px;
   border: 0;
   background: transparent;
-  border-radius: 4px;
+  border-radius: 999px;
   font-size: 12px;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 .language-toggle button[aria-pressed='true'] {
   background: var(--brand-primary);
@@ -207,7 +240,7 @@ h1 {
   margin: 0 0 5px;
 }
 .prototype-label > span:first-child {
-  color: var(--brand-primary);
+  color: var(--brand-primary-text);
 }
 .step-nav ol {
   display: grid;
@@ -252,8 +285,8 @@ h1 {
   color: var(--on-primary);
 }
 .step-nav button.completed .step-index {
-  border-color: #849146;
-  color: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: var(--brand-primary-text);
 }
 
 /* ====================================================================
@@ -270,7 +303,9 @@ h1 {
 .car-stage {
   position: relative;
   min-height: 490px;
-  background: radial-gradient(ellipse at 50% 48%, #353d242d, transparent 65%), #171a14;
+  background:
+    radial-gradient(ellipse at 50% 48%, rgb(27 47 143 / 0.3), transparent 65%),
+    var(--surface-sunken);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
@@ -279,14 +314,14 @@ h1 {
 .stage-grid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(#83936730 0.8px, transparent 0.8px);
+  background-image: radial-gradient(rgb(127 162 255 / 0.14) 0.8px, transparent 0.8px);
   background-size: 22px 22px;
   mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
   z-index: -1;
 }
 .orbit {
   position: absolute;
-  border: 1px solid #8696651c;
+  border: 1px solid rgb(127 162 255 / 0.1);
   border-radius: 50%;
   top: 50%;
   left: 50%;
@@ -323,14 +358,14 @@ h1 {
   display: flex;
   align-items: center;
   gap: 7px;
-  color: #ccd4bb;
+  color: var(--text);
 }
 .stage-top i {
   display: inline-block;
   width: 5px;
   height: 5px;
   background: var(--brand-primary);
-  box-shadow: 0 0 12px #dfff0055;
+  box-shadow: 0 0 12px rgb(215 20 30 / 0.7);
   border-radius: 50%;
 }
 .stage-bottom {
@@ -349,7 +384,7 @@ h1 {
   writing-mode: vertical-rl;
   font-size: 9px;
   letter-spacing: 2px;
-  color: #737d64;
+  color: var(--subtle);
 }
 .car-camera {
   position: absolute;
@@ -394,9 +429,9 @@ h1 {
   pointer-events: none;
 }
 .stage-callout > span:last-child {
-  background: #10130de8;
+  background: rgb(7 13 28 / 0.9);
   padding: 8px 12px;
-  border: 1px solid #626e4166;
+  border: 1px solid var(--border-strong);
   border-radius: 5px;
 }
 .callout-plus {
@@ -431,7 +466,7 @@ h1 {
 }
 .car-control[tabindex='0']:focus-visible {
   outline: none;
-  stroke: var(--brand-primary);
+  stroke: var(--focus);
   stroke-width: 5px;
 }
 .hit-zone {
@@ -439,29 +474,29 @@ h1 {
   stroke: none;
 }
 .rubber {
-  fill: #080b08;
-  stroke: #616852;
+  fill: #05080f;
+  stroke: #4a5878;
   stroke-width: 2px;
 }
 .tires path {
-  stroke: #313a28;
+  stroke: #2a3550;
   stroke-width: 2px;
   fill: none;
 }
 .headlight {
-  fill: #e9ffd3;
-  filter: drop-shadow(0 0 4px #dfff0077);
+  fill: #f2f6ff;
+  filter: drop-shadow(0 0 4px rgb(200 220 255 / 0.7));
 }
 .tail-light {
-  fill: #b39251;
+  fill: #e0313a;
 }
 .cabin rect:not(:first-child) {
-  fill: #536343;
-  stroke: #8b9973;
+  fill: #3a4766;
+  stroke: #6f7fa3;
 }
 .door-control {
-  fill: #58634d;
-  stroke: #98a581;
+  fill: #3d4a6b;
+  stroke: #8394bb;
   stroke-width: 1.5px;
 }
 .door-glass {
@@ -489,18 +524,18 @@ h1 {
 }
 [data-step='2'] .interior-selected .door-control {
   stroke: var(--brand-primary);
-  fill: #7c8d38;
+  fill: rgb(215 20 30 / 0.55);
 }
 .tires-selected .rubber {
   stroke: var(--brand-primary);
-  fill: #182004;
+  fill: #2a0508;
   stroke-width: 3px;
 }
 .tires-selected .tires path {
-  stroke: #dfff0099;
+  stroke: rgb(255 77 85 / 0.6);
 }
 .wax-selected #car-roof {
-  fill: #849743;
+  fill: #8c1a22;
   stroke: var(--brand-primary);
   stroke-width: 2px;
 }
@@ -519,7 +554,7 @@ h1 {
   stroke-dasharray: none;
 }
 [data-step='3'] .roof-control {
-  stroke: #cfe87c;
+  stroke: var(--brand-blue);
   stroke-dasharray: 5 3;
 }
 .interaction-pulse .callout-plus {
@@ -527,7 +562,7 @@ h1 {
 }
 @keyframes acknowledge {
   50% {
-    box-shadow: 0 0 0 10px #dfff0022;
+    box-shadow: 0 0 0 10px rgb(215 20 30 / 0.3);
   }
 }
 
@@ -591,7 +626,7 @@ h1 {
 }
 .icon-button:hover:not(:disabled) {
   border-color: var(--brand-primary);
-  color: var(--brand-primary);
+  color: var(--brand-primary-text);
 }
 .vehicle-dots {
   display: flex;
@@ -611,7 +646,7 @@ h1 {
   content: '';
   width: 6px;
   height: 6px;
-  background: #606954;
+  background: var(--subtle);
   border-radius: 50%;
 }
 .vehicle-dots button[aria-pressed='true']:after {
@@ -628,7 +663,7 @@ h1 {
   font-size: 14px;
 }
 .detail-line strong {
-  color: var(--brand-primary);
+  color: var(--text);
   font-size: 24px;
 }
 .quiet-note {
@@ -649,20 +684,28 @@ h1 {
   gap: 12px;
   padding: 15px 14px;
   text-align: start;
-  border: 1px solid #414936;
-  border-radius: 9px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
   background: transparent;
   min-height: 77px;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.package-button:hover,
+.addon-button:hover {
+  border-color: var(--subtle);
+  background: var(--surface-raised);
 }
 .package-button[aria-pressed='true'],
 .addon-button[aria-pressed='true'] {
   border-color: var(--brand-primary);
-  background: #dfff000a;
+  background: var(--brand-primary-soft);
 }
 .option-indicator {
   width: 17px;
   height: 17px;
-  border: 1px solid #717a63;
+  border: 1px solid var(--subtle);
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -687,7 +730,7 @@ h1 {
   margin-top: 4px;
 }
 .option-price {
-  color: var(--brand-primary);
+  color: var(--text);
   font-size: 18px;
   font-weight: 700;
   white-space: nowrap;
@@ -707,13 +750,13 @@ h1 {
   margin-top: 24px;
 }
 .interaction-note > span:first-child {
-  color: var(--brand-primary);
+  color: var(--brand-blue);
   font-size: 22px;
 }
 .optional-label {
   font-size: 10px;
   letter-spacing: 1.4px;
-  color: #818d70;
+  color: var(--muted);
 }
 .panel-footer {
   display: flex;
@@ -735,7 +778,7 @@ h1 {
   margin: 18px 0 0;
   padding: 12px;
   border: 1px solid var(--brand-primary);
-  color: var(--brand-primary);
+  color: var(--brand-primary-text);
   font-size: 14px;
   border-radius: 6px;
 }
@@ -757,9 +800,9 @@ h1 {
 }
 .calendar {
   padding: 15px;
-  background: #12160f;
+  background: var(--surface-sunken);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 14px;
 }
 .calendar-heading {
   display: flex;
@@ -806,10 +849,10 @@ h1 {
   font-weight: 700;
 }
 .calendar-days button.today {
-  border-color: #778745;
+  border-color: var(--brand-blue);
 }
 .calendar-days button:disabled {
-  opacity: 0.22;
+  opacity: 0.32;
 }
 .time-heading {
   display: flex;
@@ -832,15 +875,16 @@ h1 {
 }
 .time-slots button {
   min-height: 42px;
-  border: 1px solid #424b33;
-  border-radius: 5px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
   background: transparent;
   font-size: 13px;
 }
 .time-slots button[aria-pressed='true'] {
   border-color: var(--brand-primary);
-  background: #dfff0014;
-  color: var(--brand-primary);
+  background: var(--brand-primary);
+  color: var(--on-primary);
+  font-weight: 700;
 }
 .time-slots > p {
   grid-column: 1/-1;
@@ -850,14 +894,15 @@ h1 {
 }
 .policy-warning {
   border-inline-start: 3px solid var(--brand-primary);
-  background: #dfff0009;
+  background: rgb(215 20 30 / 0.07);
+  border-radius: 0 10px 10px 0;
   padding: 14px 16px;
   margin: 22px 0 6px;
 }
 .policy-warning strong {
   display: block;
   font-size: 11px;
-  color: var(--brand-primary);
+  color: var(--brand-primary-text);
   letter-spacing: 0.7px;
   margin-bottom: 6px;
 }
@@ -865,7 +910,7 @@ h1 {
   display: block;
   font-size: 13px;
   line-height: 1.65;
-  color: #c8cebe;
+  color: var(--text-soft);
 }
 .reminder-toggle {
   display: flex;
@@ -895,7 +940,7 @@ h1 {
   width: 44px;
   height: 25px;
   border-radius: 20px;
-  background: #525b47;
+  background: var(--border-strong);
   position: relative;
   flex-shrink: 0;
 }
@@ -905,7 +950,7 @@ h1 {
   width: 19px;
   height: 19px;
   border-radius: 50%;
-  background: #d7decc;
+  background: #e6ebf5;
   top: 3px;
   inset-inline-start: 3px;
   transition: transform 0.2s;
@@ -918,7 +963,7 @@ h1 {
   transform: translateX(19px);
 }
 .reminder-toggle input:focus-visible + .switch-track {
-  outline: 2px solid var(--brand-primary);
+  outline: 2px solid var(--focus);
   outline-offset: 4px;
 }
 .reminder-channels {
@@ -943,9 +988,9 @@ h1 {
   width: 100%;
   min-height: 48px;
   margin-top: 6px;
-  background: #12160f;
-  border: 1px solid #687455;
-  border-radius: 6px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
   padding: 10px 14px;
 }
 .policy-accept {
@@ -954,7 +999,7 @@ h1 {
   gap: 8px;
   font-size: 12px;
   line-height: 1.6;
-  color: #c8cebe;
+  color: var(--text-soft);
   padding-top: 8px;
   cursor: pointer;
 }
@@ -990,7 +1035,7 @@ h1 {
   gap: 10px;
 }
 .total-block strong {
-  color: var(--brand-primary);
+  color: var(--text);
   font-size: 36px;
   letter-spacing: -1px;
   white-space: nowrap;
@@ -1023,28 +1068,43 @@ h1 {
   min-height: 52px;
   padding: 14px 32px;
   border: 0;
-  border-radius: 7px;
+  border-radius: 999px;
   background: var(--brand-primary);
   color: var(--on-primary);
   font-size: 14px;
   font-weight: 700;
   text-align: center;
+  box-shadow: 0 8px 22px rgb(215 20 30 / 0.28);
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
 }
 .primary-button:hover {
-  filter: brightness(0.93);
+  background: var(--brand-primary-strong);
+  box-shadow: 0 10px 28px rgb(215 20 30 / 0.4);
+  transform: translateY(-1px);
+}
+.primary-button:active {
+  transform: none;
 }
 .back-button {
   border: 0;
   min-height: 48px;
-  padding: 12px 14px;
+  padding: 12px 16px;
+  border-radius: 999px;
   background: transparent;
   font-size: 14px;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 .back-button:hover {
-  color: var(--brand-primary);
+  color: var(--text);
+  background: var(--surface-raised);
 }
 .demo-disclaimer {
-  color: #959f86;
+  color: var(--muted);
   font-size: 11px;
   text-align: center;
   margin: 15px 0 6px;
@@ -1052,15 +1112,15 @@ h1 {
 dialog {
   width: min(490px, calc(100% - 28px));
   max-height: 90dvh;
-  border: 1px solid #677447;
+  border: 1px solid var(--border-strong);
   border-top: 4px solid var(--brand-primary);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 34px;
   background: var(--surface);
   color: var(--text);
 }
 dialog::backdrop {
-  background: #060904cf;
+  background: rgb(3 7 16 / 0.8);
   backdrop-filter: blur(9px);
 }
 .close-dialog {
@@ -1118,7 +1178,7 @@ dialog dd {
   border: 1px solid var(--brand-primary);
   border-radius: 7px;
   font-size: 15px;
-  color: var(--brand-primary);
+  color: var(--brand-primary-text);
 }
 dialog .confirmation-policy {
   font-size: 12px !important;
@@ -1129,7 +1189,7 @@ dialog .back-button {
 }
 .no-script {
   padding: 30px;
-  color: var(--brand-primary);
+  color: var(--brand-primary-text);
 }
 
 /* ====================================================================
@@ -1138,7 +1198,7 @@ dialog .back-button {
    follow document direction. Phone/email and times remain readable LTR.
    ==================================================================== */
 [dir='rtl'] body {
-  font-family: Tahoma, Arial, sans-serif;
+  font-family: var(--font-arabic);
   line-height: 1.8;
 }
 [dir='rtl'] h1,

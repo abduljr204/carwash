@@ -307,7 +307,7 @@
     heroPay: '◎ Pay at the wash',
     heroCanvas: 'Photorealistic car wash studio preview',
     heroAlt:
-      'Metallic red Aston Martin under water spray on a glowing lime platform, reflected in the wet studio floor',
+      'Metallic red Aston Martin under water spray on a glowing red platform, reflected in the wet studio floor',
     studioLive: '● LIVE CONFIGURATION',
     studioId: 'STUDIO / 001',
     studioControls: 'Studio controls',
@@ -474,7 +474,7 @@
     heroPay: '◎ الدفع في المركز',
     heroCanvas: 'معاينة واقعية لاستوديو غسيل السيارات',
     heroAlt:
-      'سيارة أستون مارتن حمراء معدنية تحت رذاذ الماء على منصة خضراء مضيئة، تنعكس على أرضية الاستوديو المبللة',
+      'سيارة أستون مارتن حمراء معدنية تحت رذاذ الماء على منصة حمراء مضيئة، تنعكس على أرضية الاستوديو المبللة',
     studioLive: '● تخصيص مباشر',
     studioId: 'الاستوديو / ٠٠١',
     studioControls: 'أدوات التحكم بالاستوديو',
